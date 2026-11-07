@@ -12,5 +12,9 @@ export const offsets = {
     ScString_length: 0x4,
 
     DisplayObject_x: 0x20,
-    DisplayObject_y: 0x24
+    DisplayObject_y: 0x24,
+
+    LogicHttpRequest_encode: 0xbd5f3c,
+    LogicHttpRequest_bodyPtr: 0xc0,
+    LogicHttpRequest_bodySize: 0xc8
 };
