@@ -15,7 +15,6 @@ export function setupLobbyInfo(base) {
 
     initFunctions(base);
 
-    const gradient = resolveGradient(constants.Lobby_gradientTable, constants.Lobby_gradientId);
     const textName = makeScString("text");
 
     Interceptor.attach(base.add(offsets.HomePage_ctor), {
@@ -24,7 +23,7 @@ export function setupLobbyInfo(base) {
         },
         onLeave() {
             const clip = getMovieClip(uiSc, popover, 0);
-            const field = createBlingTextField(clip, textName, gradient);
+            const field = createBlingTextField(clip, textName, resolveGradient(constants.Lobby_gradientTable, constants.Lobby_gradientId));
             if (field.isNull()) {
                 console.log("[memory] bling create failed: no 'text' field in popover_text_left");
                 return;
