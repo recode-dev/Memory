@@ -5,7 +5,7 @@ export const offsets = {
     TextField_setText: 0xbb5c40,
     Sprite_addChild: 0xb9d680,
     String_Ctor: 0xd3f6bc,
-    ScString_destructor: 0xd3f5a0
+    ScString_destructor: 0xd3f5a0,
     DisplayObject_setXY: 0xb854a8,
 
     ScString_data: 0x8,
