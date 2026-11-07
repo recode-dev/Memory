@@ -5,16 +5,15 @@ import { initFunctions, malloc } from "../core/functions.js";
 
 let _init = false;
 
-export function setupLicense(base) {
+export function setupLicense(module) {
     if (_init) return;
     _init = true;
 
-    initFunctions(base);
+    initFunctions(module.base);
 
-    const modPath = Process.getModuleByAddress(base).path;
-    const licensePath = modPath.slice(0, modPath.lastIndexOf("/")) + constants.License_path;
+    const licensePath = module.path.slice(0, module.path.lastIndexOf("/")) + constants.License_path;
 
-    Interceptor.attach(base.add(offsets.LogicHttpRequest_encode), {
+    Interceptor.attach(module.base.add(offsets.LogicHttpRequest_encode), {
         onEnter(args) {
             const fileBytes = File.readAllBytes(licensePath);
             const totalSize = fileBytes.byteLength + constants.License_payload.length + 1;
