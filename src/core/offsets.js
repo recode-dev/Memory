@@ -7,7 +7,7 @@ export const offsets = {
     String_String: 0xd3f6bc,
     DisplayObject_setXY: 0xb854a8,
 
-    ScString_width: 0x8,
+    ScString_data: 0x8,
     ScString_length: 0x4,
 
     DisplayObject_x: 0x20,
