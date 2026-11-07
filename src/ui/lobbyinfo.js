@@ -1,7 +1,7 @@
 import { offsets } from "../core/offsets.js";
 import { structs } from "../core/structs.js";
 import { constants } from "../core/constants.js";
-import { initFunctions, getMovieClip, getTextFieldByName, setText, setFontSize, setAllowColorCodes, setXY, setVisibility, addChild } from "../core/functions.js";
+import { initFunctions, getMovieClip, getTextFieldByName, setText, setFontSize, setTextColor, setAllowColorCodes, setXY, setVisibility, addChild } from "../core/functions.js";
 import { withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
 
@@ -40,6 +40,7 @@ export function setupLobbyInfo(base) {
             setXY(field, constants.Lobby_x, constants.Lobby_y);
             setFontSize(field, constants.Lobby_fontSize);
             field.add(structs.TextField_fontOutline).writeU8(constants.Lobby_fontOutline);
+            setTextColor(field, constants.Lobby_color);
             setAllowColorCodes(field, true);
             paint();
 

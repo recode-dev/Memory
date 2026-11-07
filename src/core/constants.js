@@ -7,6 +7,7 @@ export const constants = {
     Lobby_y: 90.0,
     Lobby_fontSize: 14,
     Lobby_fontOutline: 1,
+    Lobby_color: 0xffffffff,
     Lobby_lightColor: 0x35b558,
     Lobby_darkColor: 0x052f10,
     Lobby_shineMs: 100,
