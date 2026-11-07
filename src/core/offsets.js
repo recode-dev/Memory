@@ -8,4 +8,6 @@ export const offsets = Object.freeze({
     DisplayObject_setXY: 0xb854a8,
     DisplayObject_x: 0x20,
     DisplayObject_y: 0x24
+    ScString_length: 0x4,
+    ScString_width: 0x8
 });
