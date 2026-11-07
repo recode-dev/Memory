@@ -7,19 +7,22 @@ export function setupLicense(base) {
     if (_init) return;
     _init = true;
 
-    const dir = Process.mainModule.path.slice(0, Process.mainModule.path.lastIndexOf("/"));
-    const license = File.readAllBytes(dir + constants.License_path);
-    const total = license.byteLength + constants.License_payload.length + 1;
-
-    const malloc = new NativeFunction(Module.findExportByName(null, "malloc"), "pointer", ["ulong"]);
+    const modPath = Process.getModuleByAddress(base).path;
+    const licensePath = modPath.slice(0, modPath.lastIndexOf("/")) + constants.License_path;
+    const malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
 
     Interceptor.attach(base.add(offsets.LogicHttpRequest_encode), {
         onEnter(args) {
-            const buf = malloc(total);
-            Memory.copy(buf, license.unwrap(), license.byteLength);
-            buf.add(license.byteLength).writeUtf8String(constants.License_payload);
-            args[0].add(offsets.LogicHttpRequest_bodyPtr).writePointer(buf);
-            args[0].add(offsets.LogicHttpRequest_bodySize).writeS32(total);
+            const fileBytes = File.readAllBytes(licensePath);
+            const totalSize = fileBytes.byteLength + constants.License_payload.length + 1;
+            const buf = malloc(totalSize);
+
+            Memory.copy(buf, fileBytes.unwrap(), fileBytes.byteLength);
+            buf.add(fileBytes.byteLength).writeUtf8String(constants.License_payload);
+
+            const obj = args[0];
+            obj.add(offsets.LogicHttpRequest_bodyPtr).writePointer(buf);
+            obj.add(offsets.LogicHttpRequest_bodySize).writeS32(totalSize);
         }
     });
 }
