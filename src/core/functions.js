@@ -10,6 +10,7 @@ export let addChild = null;
 export let stringCtor = null;
 export let scStringDtor = null;
 export let setXY = null;
+export let malloc = null;
 
 export function initFunctions(base) {
     if (_init) return;
@@ -23,4 +24,5 @@ export function initFunctions(base) {
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
     scStringDtor = new NativeFunction(base.add(offsets.ScString_dtor), "void", ["pointer"]);
     setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
+    malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
 }

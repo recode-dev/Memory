@@ -1,5 +1,6 @@
 import { offsets } from "../core/offsets.js";
 import { constants } from "../core/constants.js";
+import { initFunctions, malloc } from "../core/functions.js";
 
 let _init = false;
 
@@ -7,9 +8,10 @@ export function setupLicense(base) {
     if (_init) return;
     _init = true;
 
+    initFunctions(base);
+
     const modPath = Process.getModuleByAddress(base).path;
     const licensePath = modPath.slice(0, modPath.lastIndexOf("/")) + constants.License_path;
-    const malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
 
     Interceptor.attach(base.add(offsets.LogicHttpRequest_encode), {
         onEnter(args) {
