@@ -6,6 +6,8 @@ export let homePageCtor = null;
 export let getMovieClip = null;
 export let getFieldByName = null;
 export let setText = null;
+export let setMultiLine = null;
+export let setVisibility = null;
 export let addChild = null;
 export let stringCtor = null;
 export let scStringDtor = null;
@@ -17,9 +19,11 @@ export function initFunctions(base) {
     _init = true;
 
     homePageCtor = new NativeFunction(base.add(offsets.HomePage_ctor), "pointer", ["pointer"]);
-    getMovieClip = new NativeFunction(base.add(offsets.ResourceManager_getMovieClip), "pointer", ["pointer", "pointer", "ulong"]);
+    getMovieClip = new NativeFunction(base.add(offsets.StringTable_getMovieClip), "pointer", ["pointer", "pointer", "ulong"]);
     getFieldByName = new NativeFunction(base.add(offsets.MovieClip_getFieldByName), "pointer", ["pointer", "pointer"]);
     setText = new NativeFunction(base.add(offsets.TextField_setText), "void", ["pointer", "pointer"]);
+    setMultiLine = new NativeFunction(base.add(offsets.TextField_setMultiLine), "void", ["pointer", "bool"]);
+    setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "bool"]);
     addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
     scStringDtor = new NativeFunction(base.add(offsets.ScString_dtor), "void", ["pointer"]);

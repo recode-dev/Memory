@@ -1,6 +1,6 @@
 import { offsets } from "../core/offsets.js";
 import { structs } from "../core/structs.js";
-import { initFunctions, getMovieClip, getFieldByName, setText, addChild, setXY } from "../core/functions.js";
+import { initFunctions, getMovieClip, getFieldByName, setText, setMultiLine, setVisibility, addChild, setXY } from "../core/functions.js";
 import { withScString } from "../core/scstring.js";
 
 let _init = false;
@@ -20,8 +20,11 @@ export function setupLobbyInfo(base) {
             this.page = args[0];
         },
         onLeave() {
-            const clip = getMovieClip(uiSc, popover, 1);
+            const clip = getMovieClip(uiSc, popover, 0);
             const tf = getFieldByName(clip, textName);
+
+            setMultiLine(tf, true);
+            setVisibility(tf, true);
 
             withScString("<c00FF66>BSD BRAWL</c> v69.252\n<cFFFFFF>Telegram: @bsdatamines</c>", (str) => {
                 setText(tf, str);
