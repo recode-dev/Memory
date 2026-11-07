@@ -9,8 +9,7 @@ export let setText = null;
 export let addChild = null;
 export let stringCtor = null;
 export let scStringDtor = null;
-export let setX = null;
-export let setY = null;
+export let setXY = null;
 
 export function initFunctions(base) {
     if (_init) return;
@@ -23,6 +22,5 @@ export function initFunctions(base) {
     addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
     scStringDtor = new NativeFunction(base.add(offsets.ScString_dtor), "void", ["pointer"]);
-    setX = (ptr, val) => ptr.add(offsets.DisplayObject_x).writeFloat(val);
-    setY = (ptr, val) => ptr.add(offsets.DisplayObject_y).writeFloat(val);
+    setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
 }
