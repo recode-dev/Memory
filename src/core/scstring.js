@@ -1,17 +1,16 @@
 import { offsets } from "./offsets.js";
 
-var _ctor = null;
+const _zero = new Uint8Array(offsets.ScString_width);
+let _ctor = null;
 
 export function initScString(base) {
-    if (!_ctor) {
-        _ctor = new NativeFunction(base.add(offsets.String_String), "pointer", ["pointer", "pointer"]);
-    }
+    if (_ctor) return;
+    _ctor = new NativeFunction(base.add(offsets.String_String), "pointer", ["pointer", "pointer"]);
 }
 
-export function makeScString(str, base) {
-    if (!_ctor) initScString(base);
+export function makeScString(str) {
     const sc = Memory.alloc(offsets.ScString_width);
-    sc.writeByteArray(new Uint8Array(offsets.ScString_width));
+    sc.writeByteArray(_zero);
     _ctor(sc, Memory.allocUtf8String(str));
     return sc;
 }
