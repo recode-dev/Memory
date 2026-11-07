@@ -1,4 +1,5 @@
 import { offsets } from "../core/offsets.js";
+import { structs } from "../core/structs.js";
 import { initFunctions, getMovieClip, getFieldByName, setText, addChild, setXY } from "../core/functions.js";
 import { withScString } from "../core/scstring.js";
 
@@ -22,12 +23,14 @@ export function setupLobbyInfo(base) {
             const clip = getMovieClip(uiSc, popover, 1);
             const tf = getFieldByName(clip, textName);
 
-            withScString("<c00FF66>Recoil+</c> v1.0\n<cFFFFFF>Telegram: @recoil_dev</c>", (str) => {
+            withScString("<c00FF66>BSD BRAWL</c> v69.252\n<cFFFFFF>Telegram: @bsdatamines</c>", (str) => {
                 setText(tf, str);
             });
 
             setXY(tf, 120.0, 90.0);
-            addChild(this.page, tf);
+
+            const container = this.page.add(structs.GUIContainer_movieClip).readPointer();
+            addChild(container.isNull() ? this.page : container, tf);
         }
     });
 }

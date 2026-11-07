@@ -1,4 +1,4 @@
-import { offsets } from "./offsets.js";
+import { structs } from "./structs.js";
 import { constants } from "./constants.js";
 import { stringCtor, scStringDtor } from "./functions.js";
 
@@ -13,11 +13,11 @@ export function destroyScString(sc) {
 }
 
 export function readScString(value, maxLength = constants.ScString_max_length) {
-    const length = value.add(offsets.ScString_length).readS32();
+    const length = value.add(structs.ScString_length).readS32();
     if (length <= 0 || length > maxLength) return null;
     const data = length <= constants.ScString_inline_max ?
-        value.add(offsets.ScString_data) :
-        value.add(offsets.ScString_data).readPointer();
+        value.add(structs.ScString_data) :
+        value.add(structs.ScString_data).readPointer();
     return data.readUtf8String(length);
 }
 
