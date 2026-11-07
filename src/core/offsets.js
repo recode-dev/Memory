@@ -5,7 +5,6 @@ export const offsets = {
     TextField_setText: 0xbb5c40,
     TextField_setFontSize: 0xbb5bec,
     TextField_setTextColor: 0xbb5cf4,
-    TextField_setAllowColorCodes: 0xbb6010,
     DisplayObject_setXY: 0xb854a8,
     DisplayObject_setVisibility: 0xb854e0,
     Sprite_addChild: 0xb9d680,
