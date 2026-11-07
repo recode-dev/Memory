@@ -1,18 +1,22 @@
 import { offsets } from "../core/offsets.js";
 import { structs } from "../core/structs.js";
 import { constants } from "../core/constants.js";
-import { initFunctions, getMovieClip, getTextFieldByName, setText, setFontSize, setTextColor, setXY, setVisibility, addChild } from "../core/functions.js";
+import { initFunctions, getMovieClip, getTextFieldByName, setText, setFontSize, setAllowColorCodes, setXY, setVisibility, addChild } from "../core/functions.js";
 import { withScString } from "../core/scstring.js";
-import { shineColor } from "./shine.js";
+import { paintGradient } from "./gradient.js";
 
 let _init = false;
 let field = null;
 let phase = 0;
 
+function paint() {
+    withScString(paintGradient(constants.Lobby_text, phase), (text) => setText(field, text));
+}
+
 function shine() {
     if (!field) return;
     phase = (phase + constants.Lobby_shineStep) % 1;
-    setTextColor(field, shineColor(phase));
+    paint();
 }
 
 export function setupLobbyInfo(base) {
@@ -36,8 +40,8 @@ export function setupLobbyInfo(base) {
             setXY(field, constants.Lobby_x, constants.Lobby_y);
             setFontSize(field, constants.Lobby_fontSize);
             field.add(structs.TextField_fontOutline).writeU8(constants.Lobby_fontOutline);
-            withScString(constants.Lobby_text, (text) => setText(field, text));
-            setTextColor(field, shineColor(phase));
+            setAllowColorCodes(field, true);
+            paint();
 
             addChild(this.page, field);
             setVisibility(field, true);

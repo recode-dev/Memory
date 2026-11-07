@@ -7,6 +7,7 @@ export let getTextFieldByName = null;
 export let setText = null;
 export let setFontSize = null;
 export let setTextColor = null;
+export let setAllowColorCodes = null;
 export let setXY = null;
 export let setVisibility = null;
 export let addChild = null;
@@ -23,6 +24,7 @@ export function initFunctions(base) {
     setText = new NativeFunction(base.add(offsets.TextField_setText), "void", ["pointer", "pointer"]);
     setFontSize = new NativeFunction(base.add(offsets.TextField_setFontSize), "void", ["pointer", "uint16"]);
     setTextColor = new NativeFunction(base.add(offsets.TextField_setTextColor), "void", ["pointer", "uint"]);
+    setAllowColorCodes = new NativeFunction(base.add(offsets.TextField_setAllowColorCodes), "void", ["pointer", "bool"]);
     setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
     setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "bool"]);
     addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
