@@ -10,6 +10,7 @@ export const constants = {
     Lobby_lightColor: 0x35b558,
     Lobby_darkColor: 0x052f10,
     Lobby_shineMs: 100,
+    Lobby_bandChars: 3,
     Lobby_shineStep: 0.06,
 
     License_path: "/res/license.bin",
