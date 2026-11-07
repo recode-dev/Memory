@@ -1,21 +1,18 @@
-import
-{
-    offsets
-}
-from "./offsets.js";
-import
-{
-    constants
-}
-from "./constants.js";
-import
-{
-    getFunctions
-}
-from "./functions.js";
+import { offsets } from "./offsets.js";
+import { constants } from "./constants.js";
+import { stringCtor, scStringDtor } from "./functions.js";
 
-export function readScString(value, maxLength = constants.ScString_max_length)
-{
+export function makeScString(text) {
+    const sc = Memory.alloc(constants.ScString_width);
+    stringCtor(sc, Memory.allocUtf8String(text));
+    return sc;
+}
+
+export function destroyScString(sc) {
+    scStringDtor(sc);
+}
+
+export function readScString(value, maxLength = constants.ScString_max_length) {
     const length = value.add(offsets.ScString_length).readS32();
     if (length <= 0 || length > maxLength) return null;
     const data = length <= constants.ScString_inline_max ?
@@ -24,12 +21,9 @@ export function readScString(value, maxLength = constants.ScString_max_length)
     return data.readUtf8String(length);
 }
 
-export function withScString(text, fn)
-{
-    const fns = getFunctions();
-    const sc = Memory.alloc(constants.ScString_width);
-    fns.StringCtor(sc, Memory.allocUtf8String(text));
+export function withScString(text, fn) {
+    const sc = makeScString(text);
     const result = fn(sc);
-    fns.ScString_destruct(sc);
+    destroyScString(sc);
     return result;
 }
