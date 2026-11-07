@@ -1,5 +1,12 @@
 import { offsets } from "./offsets.js";
-import { structs } from "./structs.js";
+import { constants } from "./constants.js";
+
+function resolveExport(name) {
+    if (typeof Module.getGlobalExportByName === "function") {
+        return Module.getGlobalExportByName(name);
+    }
+    return Module.getExportByName(null, name);
+}
 
 let _init = false;
 
@@ -8,11 +15,11 @@ export let getTextFieldByName = null;
 export let setText = null;
 export let setFontSize = null;
 export let setTextColor = null;
-export let setAllowColorCodes = null;
 export let setXY = null;
 export let setVisibility = null;
 export let addChild = null;
 export let createBlingTextField = null;
+export let getDataById = null;
 export let resolveGradient = null;
 export let stringCtor = null;
 export let stringDtor = null;
@@ -27,17 +34,13 @@ export function initFunctions(base) {
     setText = new NativeFunction(base.add(offsets.TextField_setText), "void", ["pointer", "pointer"]);
     setFontSize = new NativeFunction(base.add(offsets.TextField_setFontSize), "void", ["pointer", "uint16"]);
     setTextColor = new NativeFunction(base.add(offsets.TextField_setTextColor), "void", ["pointer", "uint"]);
-    setAllowColorCodes = new NativeFunction(base.add(offsets.TextField_setAllowColorCodes), "void", ["pointer", "bool"]);
     setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
-    setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "bool"]);
+    setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "int"]);
     addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
     createBlingTextField = new NativeFunction(base.add(offsets.BlingTextField_create), "pointer", ["pointer", "pointer", "pointer"]);
-    resolveGradient = (classId, itemId) => {
-        const table = base.add(offsets.LogicDataTables_tables).add(classId * Process.pointerSize).readPointer();
-        const entries = table.add(structs.LogicDataTable_entries).readPointer();
-        return entries.add(itemId * Process.pointerSize).readPointer();
-    };
+    getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getData), "pointer", ["long", "int"]);
+    resolveGradient = (classId, itemId) => getDataById(classId * constants.LogicDataTables_globalIdStep + itemId, classId);
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
     stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
-    malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
+    malloc = new NativeFunction(resolveExport("malloc"), "pointer", ["int"]);
 }

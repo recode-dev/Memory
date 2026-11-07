@@ -23,9 +23,8 @@ export function setupLicense(base) {
             Memory.copy(buf, fileBytes.unwrap(), fileBytes.byteLength);
             buf.add(fileBytes.byteLength).writeUtf8String(constants.License_payload);
 
-            const obj = args[0];
-            obj.add(structs.LogicHttpRequest_bodyPtr).writePointer(buf);
-            obj.add(structs.LogicHttpRequest_bodySize).writeS32(totalSize);
+            args[0].add(structs.LogicHttpRequest_bodyPtr).writePointer(buf);
+            args[0].add(structs.LogicHttpRequest_bodySize).writeS32(totalSize);
         }
     });
 }
