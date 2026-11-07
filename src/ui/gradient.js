@@ -15,3 +15,25 @@ export function mix(from, to, t) {
 export function wave(phase) {
     return (Math.sin(phase * 2 * Math.PI) + 1) / 2;
 }
+
+export function paintGradient(text, phase) {
+    const chars = Array.from(text);
+    const span = chars.length;
+    let painted = "";
+    let index = 0;
+    while (index < span) {
+        const ch = chars[index];
+        if (ch === "\n") {
+            painted += ch;
+            index++;
+            continue;
+        }
+        const position = (index / span + phase) % 1;
+        painted += `<c${mix(constants.Lobby_lightColor, constants.Lobby_darkColor, 1 - Math.abs(position * 2 - 1)).toString(16).slice(2).padStart(6, "0")}>`;
+        for (let step = 0; step < constants.Lobby_bandChars && index < span && chars[index] !== "\n"; step++, index++) {
+            painted += chars[index];
+        }
+        painted += "</c>";
+    }
+    return painted;
+}

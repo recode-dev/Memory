@@ -2,8 +2,7 @@ export const constants = {
     ScString_inline_max: 7,
     ScString_width: 32,
 
-    Lobby_textTop: "Memory v69.252",
-    Lobby_textBottom: "Telegram: @memoryutils",
+    Lobby_text: "Memory v69.252\nTelegram: @memoryutils",
     Lobby_x: 120.0,
     Lobby_y: 90.0,
     Lobby_fontSize: 14,
@@ -13,7 +12,7 @@ export const constants = {
     Lobby_midColor: 0x1f8a3a,
     Lobby_darkColor: 0x052f10,
     Lobby_shineMs: 100,
-    Lobby_lineHeight: 18.0,
+    Lobby_bandChars: 3,
     Lobby_shineStep: 0.06,
 
     License_path: "/res/license.bin",
