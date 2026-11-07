@@ -1,0 +1,11 @@
+export const offsets = Object.freeze({
+    HomePage_ctor: 0x86f974,
+    ResourceManager_getMovieClip: 0xb454f0,
+    MovieClip_getFieldByName: 0xb8a074,
+    TextField_setText: 0xbb5c40,
+    Sprite_addChild: 0xb9d680,
+    String_String: 0xd3f6bc,
+    DisplayObject_setXY: 0xb854a8,
+    DisplayObject_x: 0x20,
+    DisplayObject_y: 0x24
+});
