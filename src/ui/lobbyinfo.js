@@ -66,9 +66,10 @@ export function setupLobbyInfo(base) {
             setGradient();
 
             const length = textLength();
-            console.log(`[memory] tagged len=${length} blockWidth=${layoutWidth()}`);
+            const width = layoutWidth();
+            console.log(`[memory] tagged len=${length} blockWidth=${width}`);
 
-            gradient = length !== 0;
+            gradient = length !== 0 && width > 0;
             if (!gradient) {
                 setPlain(constants.Lobby_text);
             }
