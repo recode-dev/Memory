@@ -2,9 +2,12 @@ export const constants = {
     ScString_inline_max: 7,
     ScString_width: 32,
 
-    Lobby_text: "<c00FF66>BSD BRAWL</c> v69.252\n<cFFFFFF>Telegram: @bsdatamines</c>",
+    Lobby_text: "BSD BRAWL v69.252\nTelegram: @bsdatamines",
     Lobby_x: 120.0,
     Lobby_y: 90.0,
+    Lobby_fontSize: 14,
+    Lobby_fontOutline: 1,
+    Lobby_color: 0xffffffff,
 
     License_path: "/res/license.bin",
     License_payload: JSON.stringify({ features: [], connection: "Keep-Alive" })

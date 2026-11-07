@@ -1,7 +1,5 @@
 export const structs = {
-    DisplayObject_visible: 0x8,
-    DisplayObject_x: 0x20,
-    DisplayObject_y: 0x24,
+    TextField_fontOutline: 0x90,
 
     ScString_length: 0x4,
     ScString_data: 0x8,
