@@ -1,4 +1,4 @@
-export const offsets = Object.freeze({
+export const offsets = {
     HomePage_ctor: 0x86f974,
     ResourceManager_getMovieClip: 0xb454f0,
     MovieClip_getFieldByName: 0xb8a074,
@@ -6,8 +6,10 @@ export const offsets = Object.freeze({
     Sprite_addChild: 0xb9d680,
     String_String: 0xd3f6bc,
     DisplayObject_setXY: 0xb854a8,
-    ScString_length: 0x4,
+
     ScString_width: 0x8,
+    ScString_length: 0x4,
+
     DisplayObject_x: 0x20,
     DisplayObject_y: 0x24
-});
+};
