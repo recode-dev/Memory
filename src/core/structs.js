@@ -1,7 +1,5 @@
 export const structs = {
-    GUIContainer_movieClip: 0x90,
-
-    DisplayObject_flags: 0x28,
+    DisplayObject_visible: 0x8,
     DisplayObject_x: 0x20,
     DisplayObject_y: 0x24,
 

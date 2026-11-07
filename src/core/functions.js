@@ -2,31 +2,27 @@ import { offsets } from "./offsets.js";
 
 let _init = false;
 
-export let homePageCtor = null;
 export let getMovieClip = null;
-export let getFieldByName = null;
+export let getTextFieldByName = null;
 export let setText = null;
 export let setMultiLine = null;
-export let setVisibility = null;
+export let setXY = null;
 export let addChild = null;
 export let stringCtor = null;
-export let scStringDtor = null;
-export let setXY = null;
+export let stringDtor = null;
 export let malloc = null;
 
 export function initFunctions(base) {
     if (_init) return;
     _init = true;
 
-    homePageCtor = new NativeFunction(base.add(offsets.HomePage_ctor), "pointer", ["pointer"]);
     getMovieClip = new NativeFunction(base.add(offsets.StringTable_getMovieClip), "pointer", ["pointer", "pointer", "ulong"]);
-    getFieldByName = new NativeFunction(base.add(offsets.MovieClip_getFieldByName), "pointer", ["pointer", "pointer"]);
+    getTextFieldByName = new NativeFunction(base.add(offsets.MovieClip_getTextFieldByName), "pointer", ["pointer", "pointer"]);
     setText = new NativeFunction(base.add(offsets.TextField_setText), "void", ["pointer", "pointer"]);
     setMultiLine = new NativeFunction(base.add(offsets.TextField_setMultiLine), "void", ["pointer", "bool"]);
-    setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "bool"]);
+    setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["float", "float", "pointer"]);
     addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
-    scStringDtor = new NativeFunction(base.add(offsets.ScString_dtor), "void", ["pointer"]);
-    setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
+    stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
     malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
 }

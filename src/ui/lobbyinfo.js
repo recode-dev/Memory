@@ -1,6 +1,7 @@
 import { offsets } from "../core/offsets.js";
 import { structs } from "../core/structs.js";
-import { initFunctions, getMovieClip, getFieldByName, setText, setMultiLine, setVisibility, addChild, setXY } from "../core/functions.js";
+import { constants } from "../core/constants.js";
+import { initFunctions, getMovieClip, getTextFieldByName, setText, setMultiLine, setXY, addChild } from "../core/functions.js";
 import { withScString } from "../core/scstring.js";
 
 let _init = false;
@@ -21,19 +22,14 @@ export function setupLobbyInfo(base) {
         },
         onLeave() {
             const clip = getMovieClip(uiSc, popover, 0);
-            const tf = getFieldByName(clip, textName);
+            const field = getTextFieldByName(clip, textName);
 
-            setMultiLine(tf, true);
-            setVisibility(tf, true);
+            field.add(structs.DisplayObject_visible).writeU8(1);
+            setMultiLine(field, true);
+            setXY(constants.Lobby_x, constants.Lobby_y, field);
+            withScString(constants.Lobby_text, (text) => setText(field, text));
 
-            withScString("<c00FF66>BSD BRAWL</c> v69.252\n<cFFFFFF>Telegram: @bsdatamines</c>", (str) => {
-                setText(tf, str);
-            });
-
-            setXY(tf, 120.0, 90.0);
-
-            const container = this.page.add(structs.GUIContainer_movieClip).readPointer();
-            addChild(container.isNull() ? this.page : container, tf);
+            addChild(this.page, field);
         }
     });
 }
