@@ -1,23 +1,35 @@
-import { offsets } from "./offsets.js";
+import
+{
+    offsets
+}
+from "./offsets.js";
+import
+{
+    constants
+}
+from "./constants.js";
+import
+{
+    getFunctions
+}
+from "./functions.js";
 
-const _zero = new Uint8Array(offsets.ScString_width);
-let _ctor = null;
-
-export function initScString(base) {
-    if (_ctor) return;
-    _ctor = new NativeFunction(base.add(offsets.String_String), "pointer", ["pointer", "pointer"]);
+export function readScString(value, maxLength = constants.ScString_max_length)
+{
+    const length = value.add(offsets.ScString_length).readS32();
+    if (length <= 0 || length > maxLength) return null;
+    const data = length <= constants.ScString_inline_max ?
+        value.add(offsets.ScString_data) :
+        value.add(offsets.ScString_data).readPointer();
+    return data.readUtf8String(length);
 }
 
-export function makeScString(str) {
-    const sc = Memory.alloc(offsets.ScString_width);
-    sc.writeByteArray(_zero);
-    _ctor(sc, Memory.allocUtf8String(str));
-    return sc;
-}
-
-export function readScString(ptr) {
-    const len = ptr.add(offsets.ScString_length).readU32();
-    const dataField = ptr.add(offsets.ScString_data);
-    const data = len <= offsets.ScString_inline_max ? dataField : dataField.readPointer();
-    return data.readUtf8String(len);
+export function withScString(text, fn)
+{
+    const fns = getFunctions();
+    const sc = Memory.alloc(constants.ScString_width);
+    fns.StringCtor(sc, Memory.allocUtf8String(text));
+    const result = fn(sc);
+    fns.ScString_destruct(sc);
+    return result;
 }
