@@ -2,7 +2,7 @@ export const constants = {
     ScString_inline_max: 7,
     ScString_width: 32,
 
-    Lobby_text: "BSD BRAWL v69.252\nTelegram: @bsdatamines",
+    Lobby_text: "Memory v69.252\nTelegram: @memoryutils",
     Lobby_x: 120.0,
     Lobby_y: 90.0,
     Lobby_fontSize: 14,
