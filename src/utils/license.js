@@ -1,5 +1,4 @@
 import { offsets } from "../core/offsets.js";
-import { structs } from "../core/structs.js";
 import { constants } from "../core/constants.js";
 import { initFunctions, malloc } from "../core/functions.js";
 
@@ -24,8 +23,8 @@ export function setupLicense(base) {
             buf.add(fileBytes.byteLength).writeUtf8String(constants.License_payload);
 
             const obj = args[0];
-            obj.add(structs.LogicHttpRequest_bodyPtr).writePointer(buf);
-            obj.add(structs.LogicHttpRequest_bodySize).writeS32(totalSize);
+            obj.add(offsets.LogicHttpRequest_bodyPtr).writePointer(buf);
+            obj.add(offsets.LogicHttpRequest_bodySize).writeS32(totalSize);
         }
     });
 }
