@@ -1,4 +1,7 @@
 export const structs = {
+    LogicDataTable_entries: 0x8,
+    LogicDataTable_count: 0x14,
+
     TextField_text: 0xe0,
     TextField_layout: 0xf8,
     TextBlock_width: 0x30,

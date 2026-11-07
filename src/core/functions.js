@@ -1,4 +1,5 @@
 import { offsets } from "./offsets.js";
+import { structs } from "./structs.js";
 
 let _init = false;
 
@@ -11,6 +12,8 @@ export let setAllowColorCodes = null;
 export let setXY = null;
 export let setVisibility = null;
 export let addChild = null;
+export let createBlingTextField = null;
+export let resolveGradient = null;
 export let stringCtor = null;
 export let stringDtor = null;
 export let malloc = null;
@@ -28,6 +31,12 @@ export function initFunctions(base) {
     setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
     setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "bool"]);
     addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
+    createBlingTextField = new NativeFunction(base.add(offsets.BlingTextField_create), "pointer", ["pointer", "pointer", "pointer"]);
+    resolveGradient = (classId, itemId) => {
+        const table = base.add(offsets.LogicDataTables_tables).add(classId * Process.pointerSize).readPointer();
+        const entries = table.add(structs.LogicDataTable_entries).readPointer();
+        return entries.add(itemId * Process.pointerSize).readPointer();
+    };
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
     stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
     malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
