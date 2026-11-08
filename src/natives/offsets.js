@@ -8,7 +8,6 @@ export let offsets = {
   DisplayObject_setVisibility: "0xb854e0",
   Sprite_ctor: "0xb9d410",
   Sprite_addChild: "0xb9d680",
-  SettingsPopup_ctor: "0x490d9c",
   GenericPopup_ctor: "0x6623dc",
   GenericPopup_addButton: "0x662a20",
   GenericPopup_onCloseButton: "0x66300c",
