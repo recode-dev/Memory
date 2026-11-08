@@ -3,7 +3,7 @@ import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { getMovieClip, createBlingTextField, setText, setFontSize, setTextColor, setXY, setVisibility, addChild } from "../natives/functions.js";
 import { resolveGradient } from "../natives/datatables.js";
-import { makeScString, withScString } from "../core/scstring.js";
+import { allocScString, withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
 
 let _init = false;
@@ -22,7 +22,7 @@ export function setupLobbyInfo(base) {
     if (_init) return;
     _init = true;
 
-    const textName = makeScString(constants.Badge_field);
+    const textName = allocScString(constants.Badge_field);
 
     Interceptor.attach(base.add(offsets.HomePage_ctor), {
         onEnter(args) {

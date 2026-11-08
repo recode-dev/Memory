@@ -1,5 +1,5 @@
 import { structs } from "./structs.js";
-import { updateHealthBar, buttonPressed } from "./functions.js";
+import { updateHealthBar } from "./functions.js";
 
 let enemyAmmo = true;
 let antiAfk = true;
@@ -31,16 +31,12 @@ export function registerButton(button, action) {
     buttons.set(button.toString(), action);
 }
 
+export function buttonAction(button) {
+    const action = buttons.get(button.toString());
+    return action === undefined ? null : action;
+}
+
 export const updateHealthBarCallback = new NativeCallback(function (character, deltaTime) {
     updateHealthBar(character, deltaTime);
     if (enemyAmmo) showAmmo(character);
 }, "void", ["pointer", "float"]);
-
-export const buttonPressedCallback = new NativeCallback(function (button) {
-    const action = buttons.get(button.toString());
-    if (action === undefined) {
-        buttonPressed(button);
-        return;
-    }
-    action();
-}, "void", ["pointer"]);
