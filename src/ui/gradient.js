@@ -11,7 +11,7 @@ function mix(from, to, t) {
 }
 
 function colorAt(position) {
-    return mix(constants.Badge_lightColor, constants.Badge_darkColor, 1 - Math.abs(position * constants.Badge_waveScale - 1));
+    return mix(constants.Badge_lightColor, constants.Badge_darkColor, 1 - Math.abs(position * 2 - 1));
 }
 
 function paintLine(line, phase, painted) {
@@ -20,21 +20,21 @@ function paintLine(line, phase, painted) {
     while (index < span) {
         const raw = index / span - phase;
         const position = ((raw % 1) + 1) % 1;
-        painted += constants.Color_tagOpen + colorAt(position).toString(constants.Color_radix).padStart(constants.Color_hexDigits, "0") + constants.Color_tagEnd;
+        painted += `<c${colorAt(position).toString(16).padStart(constants.Color_hexDigits, "0")}>`;
         for (let step = 0; step < constants.Badge_bandChars && index < span; step++, index++) {
             painted += line[index];
         }
-        painted += constants.Color_tagClose;
+        painted += "</c>";
     }
     return painted;
 }
 
 export function paintGradient(text, phase) {
-    const lines = text.split(constants.Badge_lineSeparator);
+    const lines = text.split("\n");
     let painted = "";
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
         if (lineIndex > 0) {
-            painted += constants.Badge_lineSeparator;
+            painted += "\n";
         }
         painted = paintLine(lines[lineIndex], phase - lineIndex * constants.Badge_shineLineStep, painted);
     }

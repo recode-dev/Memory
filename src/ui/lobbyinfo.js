@@ -31,17 +31,17 @@ export function setupLobbyInfo(base) {
             this.page = args[0];
         },
         onLeave() {
-            const clip = getMovieClip(uiSc, popover, constants.MovieClip_flags);
+            const clip = getMovieClip(uiSc, popover, 0);
             field = createBlingTextField(clip, textName, resolveGradient(constants.Badge_gradientTable, constants.Badge_gradientId));
 
             setXY(field, constants.Badge_x, constants.Badge_y);
             setFontSize(field, constants.Badge_fontSize);
             field.add(structs.TextField_fontOutline).writeU8(constants.Badge_fontOutline);
             setTextColor(field, constants.Badge_color);
-            withScString(paintGradient(constants.Badge_text, constants.Badge_shinePhaseStart), (sc) => setText(field, sc));
+            withScString(paintGradient(constants.Badge_text, 0), (sc) => setText(field, sc));
 
             addChild(this.page, field);
-            setVisibility(field, constants.Boolean_true);
+            setVisibility(field, 1);
         }
     });
 
