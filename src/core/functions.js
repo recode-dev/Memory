@@ -1,5 +1,4 @@
 import { offsets } from "./offsets.js";
-import { constants } from "./constants.js";
 
 function resolveExport(name) {
     if (typeof Module.getGlobalExportByName === "function") {
@@ -21,7 +20,6 @@ export let addChild = null;
 export let updateHealthBar = null;
 export let createBlingTextField = null;
 export let getDataById = null;
-export let resolveGradient = null;
 export let stringCtor = null;
 export let stringDtor = null;
 export let malloc = null;
@@ -41,7 +39,6 @@ export function initFunctions(base) {
     updateHealthBar = new NativeFunction(base.add(offsets.Character_updateHealthBar), "void", ["pointer", "float"]);
     createBlingTextField = new NativeFunction(base.add(offsets.BlingTextField_create), "pointer", ["pointer", "pointer", "pointer"]);
     getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getData), "pointer", ["long", "int"]);
-    resolveGradient = (classId, itemId) => getDataById(classId * constants.LogicDataTables_globalIdStep + itemId, classId);
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
     stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
     malloc = new NativeFunction(resolveExport("malloc"), "pointer", ["int"]);
