@@ -13,7 +13,7 @@ export let updateHealthBar = null;
 export let popupCtor = null;
 export let popupAddButton = null;
 export let popupClose = null;
-let gotoAndStopFrameIndex = null;
+export let gotoAndStopFrameIndex = null;
 export let setChildVisible = null;
 let movieClipByName = null;
 export let guiGetInstance = null;
@@ -28,6 +28,7 @@ let getBox = null;
 let setHeight = null;
 let setWidth = null;
 export let movieClipSetText = null;
+export let getTextFieldByName = null;
 export let createBlingTextField = null;
 export let getDataById = null;
 export let stringCtor = null;
@@ -47,8 +48,8 @@ export function initFunctions(base) {
   addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
   spriteCtor = new NativeFunction(base.add(offsets.Sprite_ctor), "pointer", ["pointer", "int"]);
   updateHealthBar = new NativeFunction(base.add(offsets.Character_updateHealthBar), "void", ["pointer", "float"]);
-  popupCtor = new NativeFunction(base.add(offsets.GenericPopup_ctor), "pointer", ["pointer", "pointer", "int", "int", "pointer", "pointer", "pointer", "pointer", "pointer"]);
   popupAddButton = new NativeFunction(base.add(offsets.GenericPopup_addButton), "pointer", ["pointer", "pointer", "pointer"]);
+  popupCtor = new NativeFunction(base.add(offsets.GenericPopup_ctor), "pointer", ["pointer", "pointer", "int", "int", "pointer", "pointer", "pointer", "pointer", "pointer"]);
   popupClose = new NativeFunction(base.add(offsets.GenericPopup_onCloseButton), "void", ["pointer"]);
   gotoAndStopFrameIndex = new NativeFunction(base.add(offsets.MovieClip_gotoAndStopFrameIndex), "void", ["pointer", "int"]);
   setChildVisible = new NativeFunction(base.add(offsets.MovieClip_setChildVisible), "void", ["pointer", "pointer", "int"]);
@@ -65,6 +66,7 @@ export function initFunctions(base) {
   getBox = new NativeFunction(base.add(offsets.DisplayObject_getBox), "void", ["pointer", "pointer", "pointer", "int"]);
   setHeight = new NativeFunction(base.add(offsets.DisplayObject_setHeight), "void", ["pointer", "float"]);
   setWidth = new NativeFunction(base.add(offsets.DisplayObject_setWidth), "void", ["pointer", "float"]);
+  getTextFieldByName = new NativeFunction(base.add(offsets.MovieClip_getTextFieldByName), "pointer", ["pointer", "pointer"]);
   movieClipSetText = new NativeFunction(base.add(offsets.MovieClip_setText), "void", ["pointer", "pointer", "pointer"]);
   createBlingTextField = new NativeFunction(base.add(offsets.BlingTextField_create), "pointer", ["pointer", "pointer", "pointer"]);
   getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getData), "pointer", ["long", "int"]);
@@ -72,6 +74,7 @@ export function initFunctions(base) {
   stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
   malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
 }
+
 
 let buttonText = null;
 export function buttonSetText(button, text) {

@@ -1,9 +1,10 @@
-import { addChild, buttonSetText, customButtonCtor, customButtonSetMovieClip, getMovieClip, guiGetInstance, guiShowPopup, malloc, movieClipSetText, popupAddButton, popupClose, popupCtor, setChildVisible, setScale, setSize, setVisibility, setXY, spriteCtor } from "../natives/functions.js";
+import { addChild, buttonSetText, customButtonCtor, customButtonSetMovieClip, getMovieClip, guiGetInstance, guiShowPopup, getTextFieldByName, gotoAndStopFrameIndex, malloc, setText, movieClipSetText, popupAddButton, popupClose, popupCtor, setChildVisible, setScale, setSize, setVisibility, setXY, spriteCtor } from "../natives/functions.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
-import { allocScString, withScString } from "../core/scstring.js";
+import { allocScString, destroyScString, withScString } from "../core/scstring.js";
 import { registerButton } from "../natives/callbacks.js";
 import { paintGradient } from "./gradient.js";
+import { flags, toggleFlag } from "../utils/flags.js";
 
 let slot = Memory.alloc(Process.pointerSize);
 let scPath = Memory.allocUtf8String(constants.Menu_sc);
@@ -15,13 +16,20 @@ let measured = false;
 let popup = null;
 let clip = null;
 let titleSlot = null;
+let ammoArt = null;
+let txtSlot = null;
+let ammoField = null;
+let afkField = null;
+let pending = new Map();
 let okButton = null;
+let afkArt = null;
 function init() {
   if (ready) return;
   ready = true;
   empty = allocScString("");
   clipName = allocScString(constants.Panel_clip);
   titleSlot = Memory.allocUtf8String(constants.Panel_titleField);
+  txtSlot = Memory.allocUtf8String(constants.Panel_txtField);
 }
 function child(node, name) {
   const count = node.add(structs.Clip_childCount).readS16();
@@ -44,6 +52,7 @@ function attach(node, art, x, y, scale, action) {
   const button = malloc(constants.Menu_buttonSize);
   customButtonCtor(button);
   customButtonSetMovieClip(button, art, 1);
+  button.add(structs.DisplayObject_touchable).writeU8(1);
   setScale(button, scale);
   setScale(art, 1);
   setXY(button, x, y);
@@ -66,11 +75,27 @@ function closePopup() {
   popupClose(popup);
   popup = null;
 }
+
 function shine() {
   if (popup === null) return;
   const phase = Date.now() % constants.Menu_shinePeriod / constants.Menu_shinePeriod;
   withScString(paintGradient(constants.Panel_title, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars), (text) => movieClipSetText(clip, titleSlot, text));
   withScString(paintGradient(constants.Panel_footer, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars), (text) => buttonSetText(okButton, text));
+  if (flags.enemyAmmo) paintRow(ammoField, constants.Panel_ammoLabel, true, phase);
+  if (flags.antiAfk) paintRow(afkField, constants.Panel_afkLabel, true, phase);
+}
+function paintRow(field, label, on, phase) {
+  const text = on ? paintGradient(label, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars) : "<c" + constants.Panel_offColor + ">" + label + "</c>";
+  const sc = allocScString(text);
+  setText(field, sc);
+  const previous = pending.get(field);
+  if (previous !== undefined) destroyScString(previous);
+  pending.set(field, sc);
+}
+function rowLineY() {
+  const title = getTextFieldByName(clip, titleSlot).add(structs.DisplayObject_y).readFloat();
+  const footer = child(clip, constants.Panel_footerSlot).add(structs.DisplayObject_y).readFloat();
+  return title + (footer - title) * constants.Panel_rowDepth;
 }
 function build() {
   popup = malloc(constants.Menu_popupSize);
@@ -87,9 +112,27 @@ function build() {
   }
   slot.writePointer(popup);
   guiShowPopup(constants.Menu_popupX, constants.Menu_popupY, guiGetInstance(), slot, 1, constants.Menu_popupFlags, 0);
+  ammoArt = getMovieClip(scPath, Memory.allocUtf8String(constants.Panel_rowClip), 0);
+  afkArt = getMovieClip(scPath, Memory.allocUtf8String(constants.Panel_rowClip), 0);
+  gotoAndStopFrameIndex(ammoArt, 1);
+  gotoAndStopFrameIndex(afkArt, 1);
+  const rowLeft = -constants.Panel_sizeHeight / 2 + constants.Panel_rowMargin;
+  const rowPitch = (constants.Panel_sizeHeight - constants.Panel_rowMargin * 2) / constants.Panel_rowSlots;
+  const rowY = rowLineY();
+  attach(clip, ammoArt, rowLeft + rowPitch * 0.5, rowY, constants.Panel_rowScale, function() {
+    toggleFlag("enemyAmmo");
+    paintRow(ammoField, constants.Panel_ammoLabel, flags.enemyAmmo, 0);
+  });
+  attach(clip, afkArt, rowLeft + rowPitch * 1.5, rowY, constants.Panel_rowScale, function() {
+    toggleFlag("antiAfk");
+    paintRow(afkField, constants.Panel_afkLabel, flags.antiAfk, 0);
+  });
+  ammoField = getTextFieldByName(ammoArt, txtSlot);
+  afkField = getTextFieldByName(afkArt, txtSlot);
+  paintRow(ammoField, constants.Panel_ammoLabel, flags.enemyAmmo, 0);
+  paintRow(afkField, constants.Panel_afkLabel, flags.antiAfk, 0);
   withScString(constants.Panel_footerSlot, (name) => {
     okButton = popupAddButton(popup, name, NULL);
-    withScString(paintGradient(constants.Panel_footer, 0, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars), (text) => buttonSetText(okButton, text));
   });
   shine();
   if (!shining) {

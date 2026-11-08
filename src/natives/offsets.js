@@ -24,6 +24,7 @@ export let offsets = {
   DisplayObject_setScale: "0xb854c4",
   DisplayObject_setHeight: "0xb854d0",
   DisplayObject_setWidth: "0xb854d8",
+  MovieClip_getTextFieldByName: "0xb8a074",
   MovieClip_setText: "0xb8a274",
   BlingTextField_create: "0x55e464",
   LogicDataTables_getData: "0x9a9db8",
