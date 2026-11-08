@@ -1,10 +1,10 @@
 import { offsets } from "../core/offsets.js";
 import { structs } from "../core/structs.js";
+import { initFunctions, updateHealthBar } from "../core/functions.js";
 
 let _init = false;
-let updateHealthBar = null;
 
-function applyHeroHudVisibility(character) {
+function showAmmo(character) {
     for (const offset of structs.Character_heroHudClips) {
         const clip = character.add(offset).readPointer();
         if (clip.isNull()) continue;
@@ -16,14 +16,10 @@ export function setupAmmo(base) {
     if (_init) return;
     _init = true;
 
-    const target = base.add(offsets.Character_updateHealthBar);
-    updateHealthBar = new NativeFunction(target, "void", ["pointer", "float"]);
+    initFunctions(base);
 
-    Interceptor.replace(
-        target,
-        new NativeCallback(function (character, deltaTime) {
-            updateHealthBar(character, deltaTime);
-            applyHeroHudVisibility(character);
-        }, "void", ["pointer", "float"])
-    );
+    Interceptor.replace(base.add(offsets.Character_updateHealthBar), new NativeCallback(function (character, deltaTime) {
+        updateHealthBar(character, deltaTime);
+        showAmmo(character);
+    }, "void", ["pointer", "float"]));
 }

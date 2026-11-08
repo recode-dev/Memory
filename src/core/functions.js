@@ -18,6 +18,7 @@ export let setTextColor = null;
 export let setXY = null;
 export let setVisibility = null;
 export let addChild = null;
+export let updateHealthBar = null;
 export let createBlingTextField = null;
 export let getDataById = null;
 export let resolveGradient = null;
@@ -37,6 +38,7 @@ export function initFunctions(base) {
     setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
     setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "int"]);
     addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
+    updateHealthBar = new NativeFunction(base.add(offsets.Character_updateHealthBar), "void", ["pointer", "float"]);
     createBlingTextField = new NativeFunction(base.add(offsets.BlingTextField_create), "pointer", ["pointer", "pointer", "pointer"]);
     getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getData), "pointer", ["long", "int"]);
     resolveGradient = (classId, itemId) => getDataById(classId * constants.LogicDataTables_globalIdStep + itemId, classId);
