@@ -1,16 +1,8 @@
 import { offsets } from "../core/offsets.js";
-import { structs } from "../core/structs.js";
-import { initFunctions, updateHealthBar } from "../core/functions.js";
+import { initFunctions } from "../core/functions.js";
+import { updateHealthBarCallback } from "../core/callbacks.js";
 
 let _init = false;
-
-function showAmmo(character) {
-    for (const offset of structs.Character_heroHudClips) {
-        const clip = character.add(offset).readPointer();
-        if (clip.isNull()) continue;
-        clip.add(structs.DisplayObject_visible).writeU8(1);
-    }
-}
 
 export function setupAmmo(base) {
     if (_init) return;
@@ -18,8 +10,5 @@ export function setupAmmo(base) {
 
     initFunctions(base);
 
-    Interceptor.replace(base.add(offsets.Character_updateHealthBar), new NativeCallback(function (character, deltaTime) {
-        updateHealthBar(character, deltaTime);
-        showAmmo(character);
-    }, "void", ["pointer", "float"]));
+    Interceptor.replace(base.add(offsets.Character_updateHealthBar), updateHealthBarCallback);
 }
