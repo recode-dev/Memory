@@ -17,6 +17,8 @@ export const constants = {
     Lobby_shinePeriod: 2000,
     Lobby_shineLineStep: 0.5,
 
+    Ammo_maxCharacters: 32,
+
     License_path: "/res/license.bin",
     License_payload: JSON.stringify({ features: [], connection: "Keep-Alive" })
 };
