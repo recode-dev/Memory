@@ -14,5 +14,5 @@ export const offsets = {
     String_dtor: 0xd3f5a0,
     LogicHttpRequest_encode: 0xbd5f3c,
     BattleScreen_isAFK: 0x7afb40,
-    Character_updateAmmo: 0x4a7370
+    Character_updateHealthBar: 0x4adbb4
 };

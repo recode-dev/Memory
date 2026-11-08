@@ -15,7 +15,7 @@ export function setupAmmo(base) {
     if (_init) return;
     _init = true;
 
-    Interceptor.attach(base.add(offsets.Character_updateAmmo), {
+    Interceptor.attach(base.add(offsets.Character_updateHealthBar), {
         onEnter(args) {
             this.character = args[0];
         },
