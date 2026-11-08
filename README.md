@@ -6,7 +6,7 @@ Frida agent for **Nulls Brawl** `v69.252` (iOS)
 
 ```
 npm install frida-compile
-npx frida-compile src/index.js -o dist/agent.js -B -iife
+npx frida-compile src/index.js -o dist/agent.js --bundle-format iife
 ```
 
 ## Launch
