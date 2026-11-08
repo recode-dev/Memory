@@ -1,7 +1,7 @@
 import { offsets } from "../natives/offsets.js";
 import { updateHealthBarCallback } from "../natives/callbacks.js";
 
-var _init = false;
+let _init = false;
 export function setupAmmo(base) {
   if (_init) return;
   _init = true;

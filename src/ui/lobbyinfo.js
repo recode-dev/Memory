@@ -6,15 +6,15 @@ import { resolveGradient } from "../natives/datatables.js";
 import { allocScString, withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
 
-var _init = false;
-var started = false;
-var field = null;
+let _init = false;
+let started = false;
+let field = null;
 function repaint() {
   const phase = Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod;
   withScString(paintGradient(constants.Badge_text, phase, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
 }
-var uiSc = Memory.allocUtf8String(constants.Badge_sc);
-var popover = Memory.allocUtf8String(constants.Badge_clip);
+let uiSc = Memory.allocUtf8String(constants.Badge_sc);
+let popover = Memory.allocUtf8String(constants.Badge_clip);
 export function setupLobbyInfo(base) {
   if (_init) return;
   _init = true;

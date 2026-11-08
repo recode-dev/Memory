@@ -1,7 +1,7 @@
 import { offsets } from "../natives/offsets.js";
 import { isAntiAfkEnabled } from "../natives/callbacks.js";
 
-var _init = false;
+let _init = false;
 export function setupAntiAfk(base) {
   if (_init) return;
   _init = true;

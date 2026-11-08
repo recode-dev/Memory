@@ -5,7 +5,7 @@ import { setupAntiAfk } from "./features/antiafk.js";
 import { setupMenu } from "./ui/menu.js";
 import { setupAmmo } from "./features/ammo.js";
 
-var module = Process.getModuleByName("Nulls Brawl");
+let module = Process.getModuleByName("Nulls Brawl");
 initFunctions(module.base);
 setupLicense(module);
 setupLobbyInfo(module.base);

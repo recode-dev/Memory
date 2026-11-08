@@ -1,4 +1,4 @@
-export var structs = {
+export let structs = {
   TextField_text: 224,
   TextField_fontOutline: 144,
   ScString_length: 4,

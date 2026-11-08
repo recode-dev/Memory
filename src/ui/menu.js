@@ -3,7 +3,7 @@ import { buttonAction } from "../natives/callbacks.js";
 import { makeMenuButton } from "./menubutton.js";
 import { togglePanel } from "./panel.js";
 
-var _init = false;
+let _init = false;
 export function setupMenu(base) {
   if (_init) return;
   _init = true;

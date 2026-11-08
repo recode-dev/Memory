@@ -1,9 +1,9 @@
 import { updateHealthBar } from "./functions.js";
 import { structs } from "./structs.js";
 
-var enemyAmmo = true;
-var antiAfk = true;
-var buttons = new Map();
+let enemyAmmo = true;
+let antiAfk = true;
+let buttons = new Map();
 function showAmmo(character) {
   const clip = character.add(structs.Character_ammoClip).readPointer();
   if (clip.isNull()) return;
@@ -18,7 +18,7 @@ export function registerButton(button, action) {
 export function buttonAction(button) {
   return buttons.get(button.toString());
 }
-export var updateHealthBarCallback = new NativeCallback(function(character, deltaTime) {
+export let updateHealthBarCallback = new NativeCallback(function(character, deltaTime) {
   updateHealthBar(character, deltaTime);
   if (enemyAmmo) showAmmo(character);
 }, "void", ["pointer", "float"]);

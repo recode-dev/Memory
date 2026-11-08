@@ -4,8 +4,8 @@ import { constants } from "../natives/constants.js";
 import { allocScString, destroyScString } from "../core/scstring.js";
 import { registerButton } from "../natives/callbacks.js";
 
-var labelField = Memory.allocUtf8String(constants.Menu_modButtonField);
-var button = null;
+let labelField = Memory.allocUtf8String(constants.Menu_modButtonField);
+let button = null;
 export function makeMenuButton(action) {
   if (button !== null) return button;
   const sc = Memory.allocUtf8String(constants.Menu_sc);

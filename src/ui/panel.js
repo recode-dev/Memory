@@ -4,15 +4,15 @@ import { constants } from "../natives/constants.js";
 import { allocScString } from "../core/scstring.js";
 import { registerButton } from "../natives/callbacks.js";
 
-var slot = Memory.alloc(Process.pointerSize);
-var scPath = Memory.allocUtf8String(constants.Menu_sc);
-var empty = null;
-var clipName = null;
-var ready = false;
-var popup = null;
-var clip = null;
-var open = false;
-var measured = false;
+let slot = Memory.alloc(Process.pointerSize);
+let scPath = Memory.allocUtf8String(constants.Menu_sc);
+let empty = null;
+let clipName = null;
+let ready = false;
+let popup = null;
+let clip = null;
+let open = false;
+let measured = false;
 function init() {
   if (ready) return;
   ready = true;

@@ -1,4 +1,4 @@
-export var offsets = {
+export let offsets = {
   HomePage_ctor: 8845684,
   StringTable_getMovieClip: 9303260,
   MovieClip_getTextFieldByName: 12099700,

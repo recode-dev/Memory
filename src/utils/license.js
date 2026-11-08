@@ -3,7 +3,7 @@ import { malloc } from "../natives/functions.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 
-var _init = false;
+let _init = false;
 export function setupLicense(module) {
   if (_init) return;
   _init = true;

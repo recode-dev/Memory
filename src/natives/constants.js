@@ -1,4 +1,4 @@
-export var constants = {
+export let constants = {
   ScString_width: 32,
   Color_channels: [16, 8, 0],
   Color_mask: 255,
