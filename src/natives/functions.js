@@ -7,8 +7,6 @@ function resolveExport(name) {
     return Module.getExportByName(null, name);
 }
 
-let _init = false;
-
 export let getMovieClip = null;
 export let getTextFieldByName = null;
 export let setText = null;
@@ -25,9 +23,6 @@ export let stringDtor = null;
 export let malloc = null;
 
 export function initFunctions(base) {
-    if (_init) return;
-    _init = true;
-
     getMovieClip = new NativeFunction(base.add(offsets.StringTable_getMovieClip), "pointer", ["pointer", "pointer", "ulong"]);
     getTextFieldByName = new NativeFunction(base.add(offsets.MovieClip_getTextFieldByName), "pointer", ["pointer", "pointer"]);
     setText = new NativeFunction(base.add(offsets.TextField_setText), "void", ["pointer", "pointer"]);

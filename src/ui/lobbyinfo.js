@@ -1,7 +1,7 @@
 import { offsets } from "../natives/offsets.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
-import { initFunctions, getMovieClip, createBlingTextField, setText, setFontSize, setTextColor, setXY, setVisibility, addChild } from "../natives/functions.js";
+import { getMovieClip, createBlingTextField, setText, setFontSize, setTextColor, setXY, setVisibility, addChild } from "../natives/functions.js";
 import { resolveGradient } from "../natives/datatables.js";
 import { makeScString, withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
@@ -21,8 +21,6 @@ const popover = Memory.allocUtf8String(constants.Badge_clip);
 export function setupLobbyInfo(base) {
     if (_init) return;
     _init = true;
-
-    initFunctions(base);
 
     const textName = makeScString(constants.Badge_field);
 

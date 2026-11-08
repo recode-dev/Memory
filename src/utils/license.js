@@ -1,15 +1,13 @@
 import { offsets } from "../natives/offsets.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
-import { initFunctions, malloc } from "../natives/functions.js";
+import { malloc } from "../natives/functions.js";
 
 let _init = false;
 
 export function setupLicense(module) {
     if (_init) return;
     _init = true;
-
-    initFunctions(module.base);
 
     const licensePath = module.path.slice(0, module.path.lastIndexOf("/")) + constants.License_path;
 
