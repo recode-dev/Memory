@@ -1,13 +1,21 @@
-export const structs = {
-    TextField_text: 0xe0,
-    TextField_fontOutline: 0x90,
-    ScString_length: 0x4,
-
-    DisplayObject_visible: 0x8,
-    DisplayObject_x: 0x20,
-    DisplayObject_y: 0x24,
-    Character_ammoClip: 0xb20,
-
-    LogicHttpRequest_bodyPtr: 0xc0,
-    LogicHttpRequest_bodySize: 0xc8
+export var structs = {
+  TextField_text: 224,
+  TextField_fontOutline: 144,
+  ScString_length: 4,
+  DisplayObject_visible: 8,
+  Popup_clip: 144,
+  Popup_extraClip: 416,
+  Clip_childTable: 144,
+  Clip_nameTable: 152,
+  Clip_childCount: 192,
+  ScString_data: 8,
+  DisplayObject_scaleX: 16,
+  DisplayObject_scaleY: 28,
+  DisplayObject_x: 32,
+  DisplayObject_touchable: 76,
+  DisplayObject_parent: 56,
+  DisplayObject_y: 36,
+  Character_ammoClip: 2848,
+  LogicHttpRequest_bodyPtr: 192,
+  LogicHttpRequest_bodySize: 200
 };

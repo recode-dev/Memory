@@ -1,42 +1,25 @@
-import { structs } from "./structs.js";
 import { updateHealthBar } from "./functions.js";
+import { structs } from "./structs.js";
 
-let enemyAmmo = true;
-let antiAfk = true;
-const buttons = new Map();
-
+var enemyAmmo = true;
+var antiAfk = true;
+var buttons = /* @__PURE__ */ new Map();
 function showAmmo(character) {
-    const clip = character.add(structs.Character_ammoClip).readPointer();
-    if (clip.isNull()) return;
-    clip.add(structs.DisplayObject_visible).writeU8(1);
+  const clip2 = character.add(structs.Character_ammoClip).readPointer();
+  if (clip2.isNull()) return;
+  clip2.add(structs.DisplayObject_visible).writeU8(1);
 }
-
-export function toggleEnemyAmmo() {
-    enemyAmmo = !enemyAmmo;
-}
-
-export function toggleAntiAfk() {
-    antiAfk = !antiAfk;
-}
-
-export function isEnemyAmmoEnabled() {
-    return enemyAmmo;
-}
-
 export function isAntiAfkEnabled() {
-    return antiAfk;
+  return antiAfk;
 }
-
-export function registerButton(button, action) {
-    buttons.set(button.toString(), action);
+export function registerButton(button2, action) {
+  buttons.set(button2.toString(), action);
 }
-
-export function buttonAction(button) {
-    const action = buttons.get(button.toString());
-    return action === undefined ? null : action;
+export function buttonAction(button2) {
+  const action = buttons.get(button2.toString());
+  return action === void 0 ? null : action;
 }
-
-export const updateHealthBarCallback = new NativeCallback(function (character, deltaTime) {
-    updateHealthBar(character, deltaTime);
-    if (enemyAmmo) showAmmo(character);
+export var updateHealthBarCallback = new NativeCallback(function(character, deltaTime) {
+  updateHealthBar(character, deltaTime);
+  if (enemyAmmo) showAmmo(character);
 }, "void", ["pointer", "float"]);

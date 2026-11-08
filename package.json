@@ -1,0 +1,11 @@
+{
+  "name": "memory",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "frida-compile src/index.js -o dist/agent.js -B iife"
+  },
+  "devDependencies": {
+    "frida-compile": "^19.1.0"
+  }
+}

@@ -1,11 +1,9 @@
 import { offsets } from "../natives/offsets.js";
 import { updateHealthBarCallback } from "../natives/callbacks.js";
 
-let _init = false;
-
+var _init = false;
 export function setupAmmo(base) {
-    if (_init) return;
-    _init = true;
-
-    Interceptor.replace(base.add(offsets.Character_updateHealthBar), updateHealthBarCallback);
+  if (_init) return;
+  _init = true;
+  Interceptor.replace(base.add(offsets.Character_updateHealthBar), updateHealthBarCallback);
 }

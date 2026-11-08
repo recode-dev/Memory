@@ -2,15 +2,21 @@ import { initFunctions } from "./natives/functions.js";
 import { setupLicense } from "./utils/license.js";
 import { setupLobbyInfo } from "./ui/lobbyinfo.js";
 import { setupAntiAfk } from "./features/antiafk.js";
+import { log, logInit } from "./core/log.js";
 import { setupMenu } from "./ui/menu.js";
 import { setupAmmo } from "./features/ammo.js";
 
-const module = Process.getModuleByName("Nulls Brawl");
-
+log("boot: script evaluated " + logInit());
+var module = Process.getModuleByName("Nulls Brawl");
+log("boot: module " + module.base);
 initFunctions(module.base);
-
+log("boot: natives ok");
 setupLicense(module);
+log("boot: license hook ok");
 setupLobbyInfo(module.base);
+log("boot: lobby hook ok");
 setupAntiAfk(module.base);
+log("boot: antiafk hook ok");
 setupMenu(module.base);
 setupAmmo(module.base);
+log("boot: ammo replace ok");
