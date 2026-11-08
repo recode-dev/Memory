@@ -1,6 +1,6 @@
-import { offsets } from "../core/offsets.js";
-import { initFunctions } from "../core/functions.js";
-import { updateHealthBarCallback } from "../core/callbacks.js";
+import { offsets } from "../natives/offsets.js";
+import { initFunctions } from "../natives/functions.js";
+import { updateHealthBarCallback } from "../natives/callbacks.js";
 
 let _init = false;
 

@@ -1,4 +1,4 @@
-import { offsets } from "../core/offsets.js";
+import { offsets } from "../natives/offsets.js";
 
 let _init = false;
 

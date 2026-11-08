@@ -1,4 +1,4 @@
-import { constants } from "../core/constants.js";
+import { constants } from "../natives/constants.js";
 
 const CHANNELS = [16, 8, 0];
 

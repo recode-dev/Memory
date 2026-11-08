@@ -1,7 +1,7 @@
-import { offsets } from "../core/offsets.js";
-import { structs } from "../core/structs.js";
-import { constants } from "../core/constants.js";
-import { initFunctions, malloc } from "../core/functions.js";
+import { offsets } from "../natives/offsets.js";
+import { structs } from "../natives/structs.js";
+import { constants } from "../natives/constants.js";
+import { initFunctions, malloc } from "../natives/functions.js";
 
 let _init = false;
 
