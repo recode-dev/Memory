@@ -1,8 +1,9 @@
-import { addChild, buttonSetText, customButtonCtor, customButtonSetMovieClip, getMovieClip, guiGetInstance, guiShowPopup, getTextFieldByName, gotoAndStopFrameIndex, malloc, setText, movieClipSetText, popupAddButton, popupClose, popupCtor, setChildVisible, setScale, setSize, setVisibility, setXY, spriteCtor } from "../natives/functions.js";
+import { addChild, createBlingTextField, customButtonCtor, customButtonSetMovieClip, getMovieClip, guiGetInstance, guiShowPopup, getTextFieldByName, gotoAndStopFrameIndex, malloc, movieClipSetText, popupClose, popupCtor, setChildVisible, setFontSize, setScale, setText, setTextColor, setXY, spriteCtor } from "../natives/functions.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { allocScString, destroyScString, withScString } from "../core/scstring.js";
 import { registerButton } from "../natives/callbacks.js";
+import { resolveGradient } from "../natives/datatables.js";
 import { paintGradient } from "./gradient.js";
 import { flags, toggleFlag } from "../utils/flags.js";
 
@@ -10,26 +11,31 @@ let slot = Memory.alloc(Process.pointerSize);
 let scPath = Memory.allocUtf8String(constants.Menu_sc);
 let empty = null;
 let clipName = null;
+let panelSc = null;
 let ready = false;
 let shining = false;
-let measured = false;
 let popup = null;
 let clip = null;
 let titleSlot = null;
-let ammoArt = null;
 let txtSlot = null;
-let ammoField = null;
-let afkField = null;
+let plateSlot = null;
+let txtSc = null;
+let gridFields = [];
+let pageButtons = [];
 let pending = new Map();
-let okButton = null;
-let afkArt = null;
+let footerField = null;
+let pageLabel = null;
+let page = 0;
 function init() {
   if (ready) return;
   ready = true;
   empty = allocScString("");
   clipName = allocScString(constants.Panel_clip);
+  panelSc = allocScString(constants.Panel_sc);
   titleSlot = Memory.allocUtf8String(constants.Panel_titleField);
   txtSlot = Memory.allocUtf8String(constants.Panel_txtField);
+  plateSlot = Memory.allocUtf8String(constants.Panel_plateTxtField);
+  txtSc = allocScString(constants.Panel_txtField);
 }
 function child(node, name) {
   const count = node.add(structs.Clip_childCount).readS16();
@@ -48,6 +54,11 @@ function iconArt(clipName, path, childName) {
   }
   return child(node, childName);
 }
+function plate() {
+  const art = getMovieClip(scPath, Memory.allocUtf8String(constants.Panel_rowClip), 0);
+  gotoAndStopFrameIndex(art, 1);
+  return art;
+}
 function attach(node, art, x, y, scale, action) {
   const button = malloc(constants.Menu_buttonSize);
   customButtonCtor(button);
@@ -60,29 +71,31 @@ function attach(node, art, x, y, scale, action) {
   registerButton(button, action);
   return button;
 }
-function measure(target) {
-  setSize(target, 1e3, 1e3);
-  const boxHeight = 1e3 / target.add(16).readFloat();
-  const boxWidth = 1e3 / target.add(28).readFloat();
-  setSize(target, boxHeight * boxHeight / 1e3, boxWidth * boxWidth / 1e3);
-}
-function measureTale() {
-  const other = malloc(constants.Menu_popupSize);
-  popupCtor(other, allocScString(constants.Panel_taleClip), 0, 0, empty, empty, empty, empty, empty);
-  measure(other.add(structs.Popup_clip).readPointer());
-}
 function closePopup() {
   popupClose(popup);
   popup = null;
 }
-
 function shine() {
   if (popup === null) return;
   const phase = Date.now() % constants.Menu_shinePeriod / constants.Menu_shinePeriod;
   withScString(paintGradient(constants.Panel_title, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars), (text) => movieClipSetText(clip, titleSlot, text));
-  withScString(paintGradient(constants.Panel_footer, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars), (text) => buttonSetText(okButton, text));
-  if (flags.enemyAmmo) paintRow(ammoField, constants.Panel_ammoLabel, true, phase);
-  if (flags.antiAfk) paintRow(afkField, constants.Panel_afkLabel, true, phase);
+  paintRow(footerField, constants.Panel_footer, true, phase);
+  paintLive(phase);
+}
+function pageSize() {
+  return constants.Panel_layout.colX.length * constants.Panel_layout.rowY.length;
+}
+function slotIndex(position) {
+  return page * pageSize() + position;
+}
+function slotLabel(index) {
+  return index === 0 ? constants.Panel_ammoLabel : index === 1 ? constants.Panel_afkLabel : constants.Panel_soonLabel;
+}
+function slotOn(index) {
+  return index === 0 ? flags.enemyAmmo : index === 1 ? flags.antiAfk : false;
+}
+function flagName(index) {
+  return index === 0 ? "enemyAmmo" : "antiAfk";
 }
 function paintRow(field, label, on, phase) {
   const text = on ? paintGradient(label, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars) : "<c" + constants.Panel_offColor + ">" + label + "</c>";
@@ -92,63 +105,95 @@ function paintRow(field, label, on, phase) {
   if (previous !== undefined) destroyScString(previous);
   pending.set(field, sc);
 }
-function rowLineY() {
-  const title = getTextFieldByName(clip, titleSlot).add(structs.DisplayObject_y).readFloat();
-  const footer = child(clip, constants.Panel_footerSlot).add(structs.DisplayObject_y).readFloat();
-  return title + (footer - title) * constants.Panel_rowDepth;
+function paintSlot(position, phase) {
+  const index = slotIndex(position);
+  paintRow(gridFields[position], slotLabel(index), slotOn(index), phase);
+}
+function paintPage() {
+  for (let position = 0; position < gridFields.length; position++) {
+    paintSlot(position, 0);
+  }
+}
+function paintLive(phase) {
+  for (let position = 0; position < gridFields.length; position++) {
+    if (slotOn(slotIndex(position))) paintSlot(position, phase);
+  }
+}
+function paintPageLabel() {
+  paintRow(pageLabel, constants.Panel_pageLabel + " " + (page + 1) + "/" + constants.Menu_pages, false, 0);
+  const layout = constants.Panel_layout;
+  setFontSize(pageLabel, layout.pageSize);
+  setXY(pageLabel, layout.pageX + layout.labelShiftX, layout.pageY + layout.labelShiftY);
+}
+function paintPageButtons() {
+  for (const item of pageButtons) {
+    const on = (item.delta < 0 ? page > 0 : page < constants.Menu_pages - 1) ? 1 : 0;
+    item.button.add(structs.DisplayObject_visible).writeU8(on);
+    item.button.add(structs.DisplayObject_touchable).writeU8(on);
+  }
+}
+function flip(delta) {
+  page = (page + delta + constants.Menu_pages) % constants.Menu_pages;
+  paintPage();
+  paintPageLabel();
+  paintPageButtons();
 }
 function build() {
+  const layout = constants.Panel_layout;
+  for (const sc of pending.values()) destroyScString(sc);
+  pending.clear();
+  gridFields = [];
+  pageButtons = [];
   popup = malloc(constants.Menu_popupSize);
-  popupCtor(popup, clipName, 0, 0, empty, empty, empty, empty, empty);
+  popupCtor(popup, clipName, 0, 0, empty, empty, empty, empty, panelSc);
   clip = popup.add(structs.Popup_clip).readPointer();
-  if (!measured) {
-    measured = true;
-    measure(clip);
-    measureTale();
-  }
-  setSize(clip, constants.Panel_sizeHeight, constants.Panel_sizeWidth);
+  setScale(clip, constants.Panel_scale);
   for (const name of constants.Panel_hidden) {
     setChildVisible(clip, Memory.allocUtf8String(name), 0);
   }
   slot.writePointer(popup);
   guiShowPopup(constants.Menu_popupX, constants.Menu_popupY, guiGetInstance(), slot, 1, constants.Menu_popupFlags, 0);
-  ammoArt = getMovieClip(scPath, Memory.allocUtf8String(constants.Panel_rowClip), 0);
-  afkArt = getMovieClip(scPath, Memory.allocUtf8String(constants.Panel_rowClip), 0);
-  gotoAndStopFrameIndex(ammoArt, 1);
-  gotoAndStopFrameIndex(afkArt, 1);
-  const rowLeft = -constants.Panel_sizeHeight / 2 + constants.Panel_rowMargin;
-  const rowPitch = (constants.Panel_sizeHeight - constants.Panel_rowMargin * 2) / constants.Panel_rowSlots;
-  const rowY = rowLineY();
-  attach(clip, ammoArt, rowLeft + rowPitch * 0.5, rowY, constants.Panel_rowScale, function() {
-    toggleFlag("enemyAmmo");
-    paintRow(ammoField, constants.Panel_ammoLabel, flags.enemyAmmo, 0);
-  });
-  attach(clip, afkArt, rowLeft + rowPitch * 1.5, rowY, constants.Panel_rowScale, function() {
-    toggleFlag("antiAfk");
-    paintRow(afkField, constants.Panel_afkLabel, flags.antiAfk, 0);
-  });
-  ammoField = getTextFieldByName(ammoArt, txtSlot);
-  afkField = getTextFieldByName(afkArt, txtSlot);
-  paintRow(ammoField, constants.Panel_ammoLabel, flags.enemyAmmo, 0);
-  paintRow(afkField, constants.Panel_afkLabel, flags.antiAfk, 0);
-  withScString(constants.Panel_footerSlot, (name) => {
-    okButton = popupAddButton(popup, name, NULL);
-  });
-  shine();
-  if (!shining) {
-    shining = true;
-    setInterval(shine, constants.Menu_shineMs);
+  for (let index = 0; index < pageSize(); index++) {
+    const column = index % layout.colX.length;
+    const line = (index - column) / layout.colX.length;
+    const art = plate();
+    attach(clip, art, layout.colX[column] + layout.featX, layout.rowY[line] + layout.featY, layout.featSize, function() {
+      const target = slotIndex(index);
+      if (target < 2) {
+        toggleFlag(flagName(target));
+        paintSlot(index, 0);
+      }
+    });
+    gridFields.push(getTextFieldByName(art, txtSlot));
   }
+  paintPage();
+  pageLabel = createBlingTextField(plate(), txtSc, resolveGradient(constants.Badge_gradientTable, constants.Badge_gradientId));
+  setTextColor(pageLabel, constants.Panel_pageColor);
+  addChild(clip, pageLabel);
+  paintPageLabel();
+  for (const spec of constants.Panel_pageButtons) {
+    const art = plate();
+    const limit = spec.x < 0 ? -layout.pnX : layout.pnX;
+    const button = attach(clip, art, limit, layout.pnY, layout.pnSize, function() {
+      flip(spec.delta);
+    });
+    pageButtons.push({ button: button, x: limit, delta: spec.delta });
+    paintRow(getTextFieldByName(art, txtSlot), spec.label, false, 0);
+  }
+  paintPageButtons();
+  const footer = child(clip, constants.Panel_footerSlot);
+  setXY(footer, 0, 0);
+  attach(clip, footer, 0, layout.footerY, layout.footerSize, function() {
+  });
+  footerField = getTextFieldByName(footer, plateSlot);
   const close = child(clip, constants.Menu_closeField);
-  const closeX = close.add(structs.DisplayObject_x).readFloat();
-  const closeY = close.add(structs.DisplayObject_y).readFloat();
   setXY(close, 0, 0);
-  attach(clip, close, closeX, closeY, constants.Panel_closeScale, function() {
+  attach(clip, close, layout.closeX, layout.closeY, layout.closeSize, function() {
     closePopup();
   });
   const info = iconArt(constants.Panel_infoClip, [], constants.Panel_infoChild);
   setXY(info, 0, 0);
-  attach(clip, info, closeX - constants.Panel_infoGap, closeY, constants.Panel_infoScale, function() {
+  attach(clip, info, layout.closeX - constants.Panel_infoGap, layout.closeY, constants.Panel_infoScale, function() {
   });
   const gear = iconArt(constants.Panel_gearClip, constants.Panel_gearPath, constants.Panel_gearChild);
   setXY(gear, 0, 0);
@@ -160,8 +205,13 @@ function build() {
   setScale(holder, holder.add(structs.DisplayObject_scaleX).readFloat() + constants.Panel_badgeScale);
   setXY(holder, constants.Panel_badgeX, constants.Panel_badgeY);
   addChild(gear, holder);
-  attach(clip, gear, closeX - constants.Panel_gearGap, closeY, constants.Panel_gearScale, function() {
+  attach(clip, gear, layout.closeX - constants.Panel_gearGap, layout.closeY, constants.Panel_gearScale, function() {
   });
+  shine();
+  if (!shining) {
+    shining = true;
+    setInterval(shine, constants.Menu_shineMs);
+  }
 }
 export function togglePanel() {
   init();
