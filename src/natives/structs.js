@@ -3,6 +3,7 @@ export let structs = {
   TextField_fontOutline: "0x90",
   ScString_length: "0x4",
   DisplayObject_visible: "0x8",
+  Button_setText: "0x1b0",
   Popup_clip: "0x90",
   Popup_extraClip: "0x1a0",
   Clip_childTable: "0x90",

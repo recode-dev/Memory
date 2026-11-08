@@ -1,7 +1,7 @@
 import { offsets } from "./offsets.js";
+import { structs } from "./structs.js";
 
 export let getMovieClip = null;
-let getTextFieldByName = null;
 export let setText = null;
 export let setFontSize = null;
 export let setTextColor = null;
@@ -11,9 +11,8 @@ export let addChild = null;
 export let spriteCtor = null;
 export let updateHealthBar = null;
 export let popupCtor = null;
-let popupSetTitle = null;
-let popupAddChildButton = null;
-let popupHideDefaults = null;
+export let popupAddButton = null;
+export let popupClose = null;
 let gotoAndStopFrameIndex = null;
 export let setChildVisible = null;
 let movieClipByName = null;
@@ -40,7 +39,6 @@ export function stageInstance() {
 }
 export function initFunctions(base) {
   getMovieClip = new NativeFunction(base.add(offsets.StringTable_getMovieClip), "pointer", ["pointer", "pointer", "ulong"]);
-  getTextFieldByName = new NativeFunction(base.add(offsets.MovieClip_getTextFieldByName), "pointer", ["pointer", "pointer"]);
   setText = new NativeFunction(base.add(offsets.TextField_setText), "void", ["pointer", "pointer"]);
   setFontSize = new NativeFunction(base.add(offsets.TextField_setFontSize), "void", ["pointer", "uint16"]);
   setTextColor = new NativeFunction(base.add(offsets.TextField_setTextColor), "void", ["pointer", "uint"]);
@@ -50,9 +48,8 @@ export function initFunctions(base) {
   spriteCtor = new NativeFunction(base.add(offsets.Sprite_ctor), "pointer", ["pointer", "int"]);
   updateHealthBar = new NativeFunction(base.add(offsets.Character_updateHealthBar), "void", ["pointer", "float"]);
   popupCtor = new NativeFunction(base.add(offsets.GenericPopup_ctor), "pointer", ["pointer", "pointer", "int", "int", "pointer", "pointer", "pointer", "pointer", "pointer"]);
-  popupSetTitle = new NativeFunction(base.add(offsets.GenericPopup_setTitle), "void", ["pointer", "pointer"]);
-  popupAddChildButton = new NativeFunction(base.add(offsets.GenericPopup_addChildButton), "pointer", ["pointer", "pointer", "pointer"]);
-  popupHideDefaults = new NativeFunction(base.add(offsets.GenericPopup_hideDefaults), "void", ["pointer"]);
+  popupAddButton = new NativeFunction(base.add(offsets.GenericPopup_addButton), "pointer", ["pointer", "pointer", "pointer"]);
+  popupClose = new NativeFunction(base.add(offsets.GenericPopup_onCloseButton), "void", ["pointer"]);
   gotoAndStopFrameIndex = new NativeFunction(base.add(offsets.MovieClip_gotoAndStopFrameIndex), "void", ["pointer", "int"]);
   setChildVisible = new NativeFunction(base.add(offsets.MovieClip_setChildVisible), "void", ["pointer", "pointer", "int"]);
   movieClipByName = new NativeFunction(base.add(offsets.MovieClip_getByName), "pointer", ["pointer", "pointer", "int"]);
@@ -74,4 +71,12 @@ export function initFunctions(base) {
   stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
   stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
   malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
+}
+
+let buttonText = null;
+export function buttonSetText(button, text) {
+  if (buttonText === null) {
+    buttonText = new NativeFunction(button.readPointer().add(structs.Button_setText).readPointer(), "void", ["pointer", "pointer", "int"]);
+  }
+  buttonText(button, text, 1);
 }
