@@ -27,7 +27,11 @@ export const constants = {
 
     Menu_popupType: "popup_profile",
     Menu_popupSize: 0x800,
-    Menu_buttonArg: 0,
+    Menu_sc: "sc/ui.sc",
+    Menu_buttonClip: "event_mode_mapeditor",
+    Menu_buttonFlag: 1,
+    Menu_addButtonSlot: 0x168,
+    Menu_labelField: "txt",
     Menu_slots: 12,
     Menu_gridX: [-220, -75, 70, 215],
     Menu_gridY: [-95, -30, 35, 90],

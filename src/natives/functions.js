@@ -18,7 +18,7 @@ export let addChild = null;
 export let updateHealthBar = null;
 export let popupCtor = null;
 export let popupAddButton = null;
-export let buttonPressed = null;
+export let movieClipSetText = null;
 export let createBlingTextField = null;
 export let getDataById = null;
 export let stringCtor = null;
@@ -37,7 +37,7 @@ export function initFunctions(base) {
     updateHealthBar = new NativeFunction(base.add(offsets.Character_updateHealthBar), "void", ["pointer", "float"]);
     popupCtor = new NativeFunction(base.add(offsets.GenericPopup_ctor), "void", ["pointer", "pointer", "int", "int", "pointer", "pointer", "pointer", "pointer"]);
     popupAddButton = new NativeFunction(base.add(offsets.GenericPopup_addButton), "pointer", ["pointer", "pointer", "int"]);
-    buttonPressed = new NativeFunction(base.add(offsets.CustomButton_buttonPressed), "void", ["pointer"]);
+    movieClipSetText = new NativeFunction(base.add(offsets.MovieClip_setText), "void", ["pointer", "pointer", "pointer"]);
     createBlingTextField = new NativeFunction(base.add(offsets.BlingTextField_create), "pointer", ["pointer", "pointer", "pointer"]);
     getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getData), "pointer", ["long", "int"]);
     stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);

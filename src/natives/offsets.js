@@ -11,6 +11,7 @@ export const offsets = {
     GenericPopup_ctor: 0x6ef200,
     GenericPopup_addButton: 0x6ef0b4,
     CustomButton_buttonPressed: 0xbb82d8,
+    MovieClip_setText: 0xb8a274,
     BlingTextField_create: 0x55e464,
     LogicDataTables_getData: 0x9a9db8,
     String_ctor: 0xd3f6bc,

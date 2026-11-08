@@ -1,12 +1,10 @@
-import { constants } from "../natives/constants.js";
-import { popupAddButton, setXY } from "../natives/functions.js";
+import { movieClipSetText, setXY } from "../natives/functions.js";
 import { registerButton } from "../natives/callbacks.js";
 
-export function makeButton(popup, entry, label, x, y) {
-    const button = popupAddButton(popup, label, constants.Menu_buttonArg);
+export function makeButton(button, entry, label, labelField, x, y) {
     setXY(button, x, y);
+    movieClipSetText(button, labelField, label);
     if (entry.action !== null) {
         registerButton(button, entry.action);
     }
-    return button;
 }
