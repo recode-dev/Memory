@@ -25,6 +25,14 @@ export const constants = {
     Badge_shinePeriod: 2000,
     Badge_shineLineStep: 0.5,
 
+    Menu_popupType: "popup_profile",
+    Menu_popupSize: 0x800,
+    Menu_buttonArg: 0,
+    Menu_slots: 12,
+    Menu_gridX: [-220, -75, 70, 215],
+    Menu_gridY: [-95, -30, 35, 90],
+    Menu_placeholder: "SOON",
+
     License_path: "/res/license.bin",
     License_payload: JSON.stringify({ features: [], connection: "Keep-Alive" })
 };

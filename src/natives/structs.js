@@ -4,6 +4,8 @@ export const structs = {
     ScString_length: 0x4,
 
     DisplayObject_visible: 0x8,
+    DisplayObject_x: 0x20,
+    DisplayObject_y: 0x24,
     Character_ammoClip: 0xb20,
 
     LogicHttpRequest_bodyPtr: 0xc0,

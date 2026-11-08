@@ -1,4 +1,5 @@
 import { offsets } from "../natives/offsets.js";
+import { isAntiAfkEnabled } from "../natives/callbacks.js";
 
 let _init = false;
 
@@ -8,7 +9,7 @@ export function setupAntiAfk(base) {
 
     Interceptor.attach(base.add(offsets.BattleScreen_isAFK), {
         onLeave(retval) {
-            retval.replace(0);
+            if (isAntiAfkEnabled()) retval.replace(0);
         }
     });
 }
