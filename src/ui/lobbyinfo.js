@@ -3,7 +3,7 @@ import { structs } from "../core/structs.js";
 import { constants } from "../core/constants.js";
 import { initFunctions, getMovieClip, createBlingTextField, setText, setFontSize, setTextColor, setXY, setVisibility, addChild } from "../core/functions.js";
 import { resolveGradient } from "../core/datatables.js";
-import { makeScString, withScString } from "../core/scstring.js";
+import { makeScString, withScString } from "../utils/scstring.js";
 import { paintGradient } from "./gradient.js";
 
 let _init = false;

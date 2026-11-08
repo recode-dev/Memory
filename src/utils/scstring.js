@@ -1,5 +1,5 @@
-import { constants } from "./constants.js";
-import { stringCtor, stringDtor } from "./functions.js";
+import { constants } from "../core/constants.js";
+import { stringCtor, stringDtor } from "../core/functions.js";
 
 export function makeScString(text) {
     const sc = Memory.alloc(constants.ScString_width);
