@@ -7,9 +7,9 @@ import { allocScString, withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
 
 var _init = false;
+var started = false;
 var field = null;
 function repaint() {
-  if (field === null) return;
   const phase = Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod;
   withScString(paintGradient(constants.Badge_text, phase, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
 }
@@ -33,7 +33,9 @@ export function setupLobbyInfo(base) {
       withScString(paintGradient(constants.Badge_text, 0, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
       addChild(this.page, field);
       setVisibility(field, 1);
+      if (started) return;
+      started = true;
+      setInterval(repaint, constants.Badge_shineMs);
     }
   });
-  setInterval(repaint, constants.Badge_shineMs);
 }

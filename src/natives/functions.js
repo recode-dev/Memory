@@ -1,11 +1,5 @@
 import { offsets } from "./offsets.js";
 
-function resolveExport(name) {
-  if (typeof Module.getGlobalExportByName === "function") {
-    return Module.getGlobalExportByName(name);
-  }
-  return Module.getExportByName(null, name);
-}
 export var getMovieClip = null;
 var getTextFieldByName = null;
 export var setText = null;
@@ -79,5 +73,5 @@ export function initFunctions(base) {
   getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getData), "pointer", ["long", "int"]);
   stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
   stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
-  malloc = new NativeFunction(resolveExport("malloc"), "pointer", ["int"]);
+  malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);
 }

@@ -3,21 +3,20 @@ import { structs } from "./structs.js";
 
 var enemyAmmo = true;
 var antiAfk = true;
-var buttons = /* @__PURE__ */ new Map();
+var buttons = new Map();
 function showAmmo(character) {
-  const clip2 = character.add(structs.Character_ammoClip).readPointer();
-  if (clip2.isNull()) return;
-  clip2.add(structs.DisplayObject_visible).writeU8(1);
+  const clip = character.add(structs.Character_ammoClip).readPointer();
+  if (clip.isNull()) return;
+  clip.add(structs.DisplayObject_visible).writeU8(1);
 }
 export function isAntiAfkEnabled() {
   return antiAfk;
 }
-export function registerButton(button2, action) {
-  buttons.set(button2.toString(), action);
+export function registerButton(button, action) {
+  buttons.set(button.toString(), action);
 }
-export function buttonAction(button2) {
-  const action = buttons.get(button2.toString());
-  return action === void 0 ? null : action;
+export function buttonAction(button) {
+  return buttons.get(button.toString());
 }
 export var updateHealthBarCallback = new NativeCallback(function(character, deltaTime) {
   updateHealthBar(character, deltaTime);

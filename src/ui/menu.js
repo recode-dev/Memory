@@ -1,6 +1,5 @@
 import { offsets } from "../natives/offsets.js";
 import { buttonAction } from "../natives/callbacks.js";
-import { log } from "../core/log.js";
 import { makeMenuButton } from "./menubutton.js";
 import { togglePanel } from "./panel.js";
 
@@ -11,8 +10,7 @@ export function setupMenu(base) {
   Interceptor.attach(base.add(offsets.CustomButton_buttonPressed), {
     onEnter(args) {
       const action = buttonAction(args[0]);
-      log("menu: press " + args[0] + (action === null ? " (foreign)" : " (own)"));
-      if (action !== null) action();
+      if (action) action();
     }
   });
   Interceptor.attach(base.add(offsets.HomePage_ctor), {
