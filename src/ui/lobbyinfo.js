@@ -11,12 +11,12 @@ let field = null;
 
 function repaint() {
     if (field === null) return;
-    const phase = (Date.now() % constants.Lobby_shinePeriod) / constants.Lobby_shinePeriod;
-    withScString(paintGradient(constants.Lobby_text, phase), (sc) => setText(field, sc));
+    const phase = (Date.now() % constants.Badge_shinePeriod) / constants.Badge_shinePeriod;
+    withScString(paintGradient(constants.Badge_text, phase), (sc) => setText(field, sc));
 }
 
-const uiSc = Memory.allocUtf8String("sc/ui.sc");
-const popover = Memory.allocUtf8String("popover_text_left");
+const uiSc = Memory.allocUtf8String(constants.Badge_sc);
+const popover = Memory.allocUtf8String(constants.Badge_clip);
 
 export function setupLobbyInfo(base) {
     if (_init) return;
@@ -24,26 +24,26 @@ export function setupLobbyInfo(base) {
 
     initFunctions(base);
 
-    const textName = makeScString("text");
+    const textName = makeScString(constants.Badge_field);
 
     Interceptor.attach(base.add(offsets.HomePage_ctor), {
         onEnter(args) {
             this.page = args[0];
         },
         onLeave() {
-            const clip = getMovieClip(uiSc, popover, 0);
-            field = createBlingTextField(clip, textName, resolveGradient(constants.Lobby_gradientTable, constants.Lobby_gradientId));
+            const clip = getMovieClip(uiSc, popover, constants.MovieClip_flags);
+            field = createBlingTextField(clip, textName, resolveGradient(constants.Badge_gradientTable, constants.Badge_gradientId));
 
-            setXY(field, constants.Lobby_x, constants.Lobby_y);
-            setFontSize(field, constants.Lobby_fontSize);
-            field.add(structs.TextField_fontOutline).writeU8(constants.Lobby_fontOutline);
-            setTextColor(field, constants.Lobby_color);
-            withScString(paintGradient(constants.Lobby_text, 0), (sc) => setText(field, sc));
+            setXY(field, constants.Badge_x, constants.Badge_y);
+            setFontSize(field, constants.Badge_fontSize);
+            field.add(structs.TextField_fontOutline).writeU8(constants.Badge_fontOutline);
+            setTextColor(field, constants.Badge_color);
+            withScString(paintGradient(constants.Badge_text, constants.Badge_shinePhaseStart), (sc) => setText(field, sc));
 
             addChild(this.page, field);
-            setVisibility(field, 1);
+            setVisibility(field, constants.Boolean_true);
         }
     });
 
-    setInterval(repaint, constants.Lobby_shineMs);
+    setInterval(repaint, constants.Badge_shineMs);
 }
