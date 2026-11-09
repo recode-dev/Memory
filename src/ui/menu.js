@@ -8,7 +8,6 @@ import { resolveGradient } from "../natives/datatables.js";
 import { paintGradient } from "./gradient.js";
 import { flags, toggleFlag } from "../utils/flags.js";
 import { makeMenuButton } from "./menubutton.js";
-import { toggleAntiAfk } from "../features/antiafk.js";
 import { toggleHideLobbyInfo } from "../features/hidelobbyinfo.js";
 import { toggleHideUltiAiming } from "../features/hideultiaiming.js";
 
@@ -131,8 +130,7 @@ function flagName(index) {
   return index === 0 ? "enemyAmmo" : "antiAfk";
 }
 function activate(target) {
-  if (target === 1) toggleAntiAfk();
-  else if (target === 2) toggleHideLobbyInfo();
+  if (target === 2) toggleHideLobbyInfo();
   else if (target === 3) toggleHideUltiAiming();
   else toggleFlag(flagName(target));
 }
