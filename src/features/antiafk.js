@@ -16,8 +16,11 @@ function sendMoveInput() {
 }
 
 const handler = new NativeCallback(function (screen) {
-  const idle = screen.add(structs.BattleScreen_afkTime).readFloat();
-  if (idle > constants.AntiAfk_idleSeconds) sendMoveInput();
+  const idle = screen.add(structs.BattleScreen_afkTime);
+  if (idle.readFloat() > constants.AntiAfk_idleSeconds) {
+    sendMoveInput();
+    idle.writeFloat(0);
+  }
   return 0;
 }, "bool", ["pointer"]);
 
