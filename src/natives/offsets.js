@@ -25,7 +25,6 @@ export let offsets = {
   GenericPopup_ctor: "0x6623dc",
   GenericPopup_onCloseButton: "0x66300c",
   GUI_getInstance: "0x53ed34",
-  GUI_closePopup: "0x53fc10",
   GUI_showPopup: "0x53fdf4",
   CustomButton_ctor: "0xbb8190",
   CustomButton_setMovieClip: "0xbb8618",
