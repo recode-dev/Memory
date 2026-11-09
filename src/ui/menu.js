@@ -63,6 +63,7 @@ function plate() {
   return art;
 }
 function attach(node, art, x, y, scale, action) {
+  if (art === null) return;
   const button = malloc(constants.Menu_buttonSize);
   customButtonCtor(button);
   customButtonSetMovieClip(button, art, 1);
@@ -182,6 +183,12 @@ function build() {
   }
   slot.writePointer(popup);
   guiShowPopup(constants.Menu_popupX, constants.Menu_popupY, guiGetInstance(), slot, 1, constants.Menu_popupFlags, 0);
+  if (slot.readPointer().isNull()) {
+    popup = null;
+    clip = null;
+    console.error("menu popup was rejected by the gui");
+    return;
+  }
   for (let index = 0; index < pageSize(); index++) {
     const column = index % layout.colX.length;
     const line = (index - column) / layout.colX.length;

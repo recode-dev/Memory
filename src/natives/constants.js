@@ -27,7 +27,7 @@ export let constants = {
   Menu_shineMs: 60,
   Menu_shinePeriod: 2e3,
   Menu_popupSize: 544,
-  Menu_popupFlags: 0,
+  Menu_popupFlags: 1,
   Menu_popupX: 0,
   Menu_popupY: 0,
   Menu_closeField: "button_close",
