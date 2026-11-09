@@ -67,7 +67,7 @@ export let constants = {
     labelShiftY: -11.5,
     pnX: 220,
     pnY: 146,
-    pnSize: 0.685,
+    pnSize: 0.72,
     footerY: 140,
     footerSize: 1,
     footerFont: 19,
