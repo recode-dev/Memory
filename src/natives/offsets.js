@@ -1,4 +1,5 @@
 export let offsets = {
+  ClientInput_ctor: "0xa95798",
   HomePage_ctor: "0x86f974",
   StringTable_getMovieClip: "0x8df4dc",
   TextField_setText: "0xbb5c40",

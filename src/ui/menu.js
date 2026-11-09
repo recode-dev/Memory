@@ -9,6 +9,7 @@ import { paintGradient } from "./gradient.js";
 import { flags, toggleFlag } from "../utils/flags.js";
 import { makeMenuButton } from "./menubutton.js";
 import { toggleHideLobbyInfo } from "../features/hidelobbyinfo.js";
+import { toggleHideUltiAiming } from "../features/hideultiaiming.js";
 
 let slot = Memory.alloc(Process.pointerSize);
 let scPath = Memory.allocUtf8String(constants.Menu_sc);
@@ -115,12 +116,14 @@ function slotLabel(index) {
   if (index === 0) return constants.Panel_ammoLabel;
   if (index === 1) return constants.Panel_afkLabel;
   if (index === 2) return constants.Panel_hideLobbyLabel;
+  if (index === 3) return constants.Panel_hideUltiAimingLabel;
   return constants.Panel_soonLabel;
 }
 function slotOn(index) {
   if (index === 0) return flags.enemyAmmo;
   if (index === 1) return flags.antiAfk;
   if (index === 2) return flags.hideLobbyInfo;
+  if (index === 3) return flags.hideUltiAiming;
   return false;
 }
 function flagName(index) {
@@ -128,6 +131,7 @@ function flagName(index) {
 }
 function activate(target) {
   if (target === 2) toggleHideLobbyInfo();
+  else if (target === 3) toggleHideUltiAiming();
   else toggleFlag(flagName(target));
 }
 function styleLabel(field, size) {
@@ -209,7 +213,7 @@ function build() {
     const art = plate();
     attach(clip, art, layout.colX[column] + layout.featX, layout.rowY[line] + layout.featY, layout.featSize, function() {
       const target = slotIndex(index);
-      if (target > 2) return;
+      if (target > 3) return;
       activate(target);
       paintSlot(index, 0);
     });

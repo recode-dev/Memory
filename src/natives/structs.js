@@ -1,4 +1,5 @@
 export let structs = {
+  ClientInput_type: "0x8",
   TextField_baseFontSize: "0x8e",
   TextField_align: "0x96",
   TextField_flags: "0x90",
