@@ -15,11 +15,14 @@ function sendMoveInput() {
   clientAddInput(client, input, character.add(structs.Character_inputPriority).readInt());
 }
 
+let lastSent = 0;
+
 const handler = new NativeCallback(function (screen) {
   const idle = screen.add(structs.BattleScreen_afkTime);
-  if (idle.readFloat() > constants.AntiAfk_idleSeconds) {
+  if (idle.readFloat() > constants.AntiAfk_idleSeconds && Date.now() - lastSent > constants.AntiAfk_resendMs) {
     sendMoveInput();
     idle.writeFloat(0);
+    lastSent = Date.now();
   }
   return 0;
 }, "bool", ["pointer"]);
