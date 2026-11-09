@@ -133,7 +133,9 @@ function slotOn(index) {
   return false;
 }
 function flagName(index) {
-  return index === 0 ? "enemyAmmo" : "antiAfk";
+  if (index === 0) return "enemyAmmo";
+  if (index === 1) return "antiAfk";
+  return "autoSpin";
 }
 function activate(target) {
   if (target === 2) toggleHideLobbyInfo();
