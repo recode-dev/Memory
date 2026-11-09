@@ -270,23 +270,9 @@ function build() {
   shine();
   startShine();
 }
-function popupAlive() {
-  const gui = guiGetInstance();
-  const list = gui.add(constants.Gui_popupList).readPointer();
-  const count = gui.add(constants.Gui_popupCount).readS32();
-  for (let i = 0; i < count; i += 1) {
-    if (list.add(i * 8).readPointer().equals(popup)) return true;
-  }
-  return false;
-}
 function togglePanel() {
   init();
   if (popup !== null) {
-    if (!popupAlive()) {
-      dropPopup();
-      build();
-      return;
-    }
     closePopup();
     return;
   }
@@ -300,6 +286,11 @@ export function setupMenu(base) {
     onEnter(args) {
       const action = buttonAction(args[0]);
       if (action) action();
+    }
+  });
+  Interceptor.attach(base.add(offsets.GUI_closePopup), {
+    onEnter(args) {
+      if (popup !== null && args[1].equals(popup)) dropPopup();
     }
   });
   Interceptor.attach(base.add(offsets.HomePage_ctor), {

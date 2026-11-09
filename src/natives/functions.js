@@ -35,7 +35,7 @@ export let gameObjectGetX = null;
 export let gameObjectGetY = null;
 let stageBase = null;
 export function stageInstance() {
-  return stageBase.add(offsets.Stage_instance).readPointer();
+  return stageBase.add(offsets.Stage_Instance).readPointer();
 }
 export function initFunctions(base) {
   battleModeGetInstance = new NativeFunction(base.add(offsets.BattleMode_getInstance), "pointer", []);
@@ -68,7 +68,7 @@ export function initFunctions(base) {
   getTextFieldByName = new NativeFunction(base.add(offsets.MovieClip_getTextFieldByName), "pointer", ["pointer", "pointer"]);
   movieClipSetText = new NativeFunction(base.add(offsets.MovieClip_setText), "void", ["pointer", "pointer", "pointer"]);
   createBlingTextField = new NativeFunction(base.add(offsets.BlingTextField_create), "pointer", ["pointer", "pointer", "pointer"]);
-  getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getData), "pointer", ["long", "int"]);
+  getDataById = new NativeFunction(base.add(offsets.LogicDataTables_getDataById), "pointer", ["long", "int"]);
   stringCtor = new NativeFunction(base.add(offsets.String_ctor), "pointer", ["pointer", "pointer"]);
   stringDtor = new NativeFunction(base.add(offsets.String_dtor), "void", ["pointer"]);
   malloc = new NativeFunction(Module.getGlobalExportByName("malloc"), "pointer", ["int"]);

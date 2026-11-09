@@ -60,7 +60,7 @@ export function setupCommands(moduleBase) {
 
 export function sendCommand(cmdType, fillFn) {
   const battle = battleModeGetInstance();
-  const manager = battle.add(structs.BattleMode_inputManager).readPointer();
+  const manager = battle.add(structs.BattleMode_clientInputManager).readPointer();
   const input = malloc(constants.ClientInput_recordSize);
   input.writeByteArray(new ArrayBuffer(constants.ClientInput_recordSize));
   clientInputCtor(input, cmdType);

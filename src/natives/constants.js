@@ -28,8 +28,6 @@ export let constants = {
   Menu_shinePeriod: 2e3,
   Menu_popupSize: 544,
   Menu_popupFlags: 1,
-  Gui_popupList: 0xd8,
-  Gui_popupCount: 0xe4,
   Menu_popupX: 0,
   Menu_popupY: 0,
   Menu_closeField: "button_close",

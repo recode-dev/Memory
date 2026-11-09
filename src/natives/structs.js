@@ -4,7 +4,7 @@ export let structs = {
   ClientInput_x: "0xc",
   ClientInput_y: "0x10",
   ClientInput_token: "0x34",
-  BattleMode_inputManager: "0x58",
+  BattleMode_clientInputManager: "0x58",
   BattleMode_hashKey: "0x60",
   BattleMode_hashEnabled: "0x70",
   LogicBattleModeClient_tileMap: "0xf8",
