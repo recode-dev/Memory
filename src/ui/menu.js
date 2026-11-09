@@ -75,8 +75,7 @@ function attach(node, art, x, y, scale, action) {
   liveButtons.push(button);
   return button;
 }
-function closePopup() {
-  const closing = popup;
+function dropPopup() {
   popup = null;
   clip = null;
   footerField = null;
@@ -85,10 +84,17 @@ function closePopup() {
   pageButtons = [];
   for (const button of liveButtons) unregisterButton(button);
   liveButtons = [];
+  for (const sc of pending.values()) destroyScString(sc);
+  pending.clear();
+}
+function closePopup() {
+  if (popup === null) return;
+  const closing = popup;
+  dropPopup();
   popupClose(closing);
 }
 function shine() {
-  if (popup === null) return;
+  if (clip === null) return;
   const phase = Date.now() % constants.Menu_shinePeriod / constants.Menu_shinePeriod;
   withScString(paintGradient(constants.Panel_title, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars), (text) => movieClipSetText(clip, titleSlot, text));
   paintRow(footerField, constants.Panel_footer, true, phase);
@@ -256,6 +262,11 @@ export function setupMenu(base) {
     onEnter(args) {
       const action = buttonAction(args[0]);
       if (action) action();
+    }
+  });
+  Interceptor.attach(base.add(offsets.GenericPopup_onCloseButton), {
+    onEnter(args) {
+      if (popup !== null && args[0].equals(popup)) dropPopup();
     }
   });
   Interceptor.attach(base.add(offsets.HomePage_ctor), {
