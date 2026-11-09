@@ -42,7 +42,7 @@ export function initFunctions(base) {
   getOwnCharacter = new NativeFunction(base.add(offsets.LogicBattleModeClient_getOwnCharacter), "pointer", ["pointer"]);
   clientInputCtor = new NativeFunction(base.add(offsets.ClientInput_ctor), "void", ["pointer", "int"]);
   clientInputManagerAddInput = new NativeFunction(base.add(offsets.ClientInputManager_addInput), "void", ["pointer", "pointer"]);
-  setClientPredictionMoveTo = new NativeFunction(base.add(offsets.LogicBattleModeClient_setClientPredictionMoveTo), "void", ["pointer", "int", "int"]);
+  setClientPredictionMoveTo = new NativeFunction(base.add(offsets.LogicBattleModeClient_setClientPredictionMoveTo), "void", ["pointer", "int", "int", "int"]);
   gameObjectGetX = new NativeFunction(base.add(offsets.LogicGameObjectClient_getX), "int", ["pointer"]);
   gameObjectGetY = new NativeFunction(base.add(offsets.LogicGameObjectClient_getY), "int", ["pointer"]);
   getMovieClip = new NativeFunction(base.add(offsets.StringTable_getMovieClip), "pointer", ["pointer", "pointer", "ulong"]);
