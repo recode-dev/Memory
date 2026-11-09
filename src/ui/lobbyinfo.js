@@ -17,7 +17,6 @@ function repaint() {
   withScString(paintGradient(constants.Badge_text, phase, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
 }
 function applyVisibility() {
-  if (field === null) return;
   if (flags.hideLobbyInfo) {
     withScString("", (sc) => setText(field, sc));
     return;

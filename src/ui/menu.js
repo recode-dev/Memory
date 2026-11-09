@@ -18,7 +18,6 @@ let empty = null;
 let clipName = null;
 let panelSc = null;
 let ready = false;
-let shining = false;
 let popup = null;
 let clip = null;
 let titleSlot = null;
@@ -66,7 +65,6 @@ function plate() {
   return art;
 }
 function attach(node, art, x, y, scale, action) {
-  if (art === null) return;
   const button = malloc(constants.Menu_buttonSize);
   customButtonCtor(button);
   customButtonSetMovieClip(button, art, 1);
@@ -75,10 +73,7 @@ function attach(node, art, x, y, scale, action) {
   setScale(art, 1);
   setXY(button, x, y);
   addChild(node, button);
-  registerButton(button, function() {
-    if (popup === null) return;
-    action();
-  });
+  registerButton(button, action);
   liveButtons.push(button);
   return button;
 }
@@ -91,17 +86,26 @@ function dropPopup() {
   pageButtons = [];
   for (const button of liveButtons) unregisterButton(button);
   liveButtons = [];
+  stopShine();
   for (const sc of pending.values()) destroyScString(sc);
   pending.clear();
 }
 function closePopup() {
-  if (popup === null) return;
   const closing = popup;
   dropPopup();
   popupClose(closing);
 }
+let shineTimer = null;
+function startShine() {
+  if (shineTimer !== null) return;
+  shineTimer = setInterval(shine, constants.Menu_shineMs);
+}
+function stopShine() {
+  if (shineTimer === null) return;
+  clearInterval(shineTimer);
+  shineTimer = null;
+}
 function shine() {
-  if (clip === null) return;
   const phase = Date.now() % constants.Menu_shinePeriod / constants.Menu_shinePeriod;
   withScString(paintGradient(constants.Panel_title, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars), (text) => movieClipSetText(clip, titleSlot, text));
   paintRow(footerField, constants.Panel_footer, true, phase);
@@ -203,12 +207,6 @@ function build() {
   }
   slot.writePointer(popup);
   guiShowPopup(constants.Menu_popupX, constants.Menu_popupY, guiGetInstance(), slot, 1, constants.Menu_popupFlags, 0);
-  if (slot.readPointer().isNull()) {
-    popup = null;
-    clip = null;
-    console.error("menu popup was rejected by the gui");
-    return;
-  }
   for (let index = 0; index < pageSize(); index++) {
     const column = index % layout.colX.length;
     const line = (index - column) / layout.colX.length;
@@ -267,10 +265,7 @@ function build() {
   attach(clip, gear, layout.closeX - constants.Panel_gearGap, layout.closeY + layout.iconDy, constants.Panel_gearScale, function() {
   });
   shine();
-  if (!shining) {
-    shining = true;
-    setInterval(shine, constants.Menu_shineMs);
-  }
+  startShine();
 }
 function popupAlive() {
   const gui = guiGetInstance();

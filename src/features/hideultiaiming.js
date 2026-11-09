@@ -3,27 +3,25 @@ import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { flags, toggleFlag } from "../utils/flags.js";
 
-let base = null;
-let listener = null;
+const handler = new NativeCallback(function (manager, input) {
+  const type = input.add(structs.ClientInput_type);
+  if (type.readS32() === constants.ClientInput_ultiAimingType) type.writeS32(constants.ClientInput_hiddenType);
+}, "void", ["pointer", "pointer"]);
+
+let address = null;
+let replaced = false;
 
 function apply() {
-  if (flags.hideUltiAiming === (listener !== null)) return;
+  if (flags.hideUltiAiming === replaced) return;
   if (flags.hideUltiAiming) {
-    listener = Interceptor.attach(base.add(offsets.ClientInputManager_addInput), {
-      onEnter(args) {
-        const type = args[1].add(structs.ClientInput_type);
-        if (type.readS32() === constants.ClientInput_ultiAimingType) {
-          type.writeS32(constants.ClientInput_hiddenType);
-        }
-      }
-    });
+    Interceptor.replace(address, handler);
   } else {
-    listener.detach();
-    listener = null;
+    Interceptor.revert(address);
   }
+  replaced = flags.hideUltiAiming;
 }
-export function setupHideUltiAiming(moduleBase) {
-  base = moduleBase;
+export function setupHideUltiAiming(base) {
+  address = base.add(offsets.ClientInputManager_addInput);
   apply();
 }
 export function toggleHideUltiAiming() {
