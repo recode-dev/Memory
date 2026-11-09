@@ -1,8 +1,7 @@
 export let flags = {
   enemyAmmo: false,
   antiAfk: false,
-  hideLobbyInfo: false,
-  staticEmoji: false
+  hideLobbyInfo: false
 };
 export function toggleFlag(name) {
   flags[name] = !flags[name];
