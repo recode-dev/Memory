@@ -1,4 +1,5 @@
 export let structs = {
+  MovieClip_framesCount: "0xbe",
   TextField_baseFontSize: "0x8e",
   TextField_align: "0x96",
   TextField_flags: "0x90",

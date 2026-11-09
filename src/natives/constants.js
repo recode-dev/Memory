@@ -88,7 +88,6 @@ export let constants = {
   Panel_hideLobbyLabel: "Hide Lobby Info",
   Panel_staticEmojiLabel: "Static Emoji",
   Emoji_sc: "emoji",
-  Emoji_staticFrame: 0,
   Panel_soonLabel: "",
   Menu_pages: 4,
   Panel_gearClip: "popup_profile",
