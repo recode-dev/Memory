@@ -3,6 +3,7 @@ import { addChild, createBlingTextField, getMovieClip, setFontSize, setText, set
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { setLobbyInfoField } from "../features/hidelobbyinfo.js";
+import { flags } from "../utils/flags.js";
 import { resolveGradient } from "../natives/datatables.js";
 import { allocScString, withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
@@ -11,6 +12,7 @@ let _init = false;
 let started = false;
 let field = null;
 function repaint() {
+  if (flags.hideLobbyInfo) return;
   const phase = Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod;
   withScString(paintGradient(constants.Badge_text, phase, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
 }
