@@ -7,6 +7,7 @@ export let structs = {
   BattleMode_inputManager: "0x58",
   Character_posX: "0x38",
   Character_posY: "0x3c",
+  Character_inputPriority: "0x48",
   TextField_baseFontSize: "0x8e",
   TextField_align: "0x96",
   TextField_flags: "0x90",

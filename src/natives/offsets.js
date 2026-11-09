@@ -3,6 +3,7 @@ export let offsets = {
   ClientInput_ctor: "0xa95798",
   BattleMode_getInstance: "0x8c5130",
   LogicBattleModeClient_getOwnCharacter: "0xac3934",
+  LogicBattleModeClient_addInput: "0xacde54",
   HomePage_ctor: "0x86f974",
   StringTable_getMovieClip: "0x8df4dc",
   TextField_setText: "0xbb5c40",
