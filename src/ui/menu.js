@@ -99,6 +99,12 @@ function slotOn(index) {
 function flagName(index) {
   return index === 0 ? "enemyAmmo" : "antiAfk";
 }
+function styleLabel(field, size) {
+  field.add(structs.TextField_baseFontSize).writeU8(size);
+  field.add(structs.TextField_align).writeU8(constants.Panel_labelAlign);
+  field.add(structs.TextField_autoAdjustFontSize).writeU8(constants.Panel_labelAutoFit);
+  setFontSize(field, size);
+}
 function paintRow(field, label, on, phase) {
   const text = on ? paintGradient(label, phase, constants.Menu_lightColor, constants.Menu_darkColor, constants.Menu_bandChars) : "<c" + constants.Panel_offColor + ">" + label + "</c>";
   const sc = allocScString(text);
@@ -166,7 +172,9 @@ function build() {
         paintSlot(index, 0);
       }
     });
-    gridFields.push(getTextFieldByName(art, txtSlot));
+    const field = getTextFieldByName(art, txtSlot);
+    styleLabel(field, layout.featFont);
+    gridFields.push(field);
   }
   paintPage();
   pageLabel = createBlingTextField(plate(), txtSc, resolveGradient(constants.Badge_gradientTable, constants.Badge_gradientId));
