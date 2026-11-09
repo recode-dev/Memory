@@ -1,6 +1,9 @@
 export let offsets = {
   ClientInputManager_addInput: "0x74675c",
   ClientInput_ctor: "0xa95798",
+  ClientInput_typeConstantTable: "0xe1e058",
+  ClientInput_hashInnerMask: "0xe1bbd0",
+  ClientInput_hashOuterMask: "0xe1bbf0",
   BattleMode_getInstance: "0x8c5130",
   BattleMode_exit: "0x8c7ef0",
   BattleScreen_update: "0x7a03a0",
