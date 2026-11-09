@@ -83,7 +83,7 @@ export let constants = {
   Panel_badgeChild: "edit_pic_icon",
   Panel_badgeX: 0,
   Panel_badgeY: 0,
-  Panel_badgeScale: 0.2,
+  Panel_badgeScale: 0.15,
   Panel_gearGap: 104,
   Panel_gearScale: 0.85,
   Panel_closeScale: 1,
@@ -94,8 +94,8 @@ export let constants = {
   Menu_modButtonClip: "map_editor_exit_button",
   Menu_modButtonLabel: "Menu",
   Menu_modButtonField: "txt",
-  Menu_modButtonX: 40,
-  Menu_modButtonY: 540,
+  Menu_modButtonX: 55,
+  Menu_modButtonY: 545,
   License_path: "/res/license.bin",
   License_payload: JSON.stringify({ features: [], connection: "Keep-Alive" })
 };
