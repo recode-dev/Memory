@@ -1,11 +1,5 @@
 export let offsets = {
   ClientInputManager_addInput: "0x74675c",
-  ClientInput_typeConstantTable: "0xe1bd30",
-  ClientInput_hashInnerMask: "0xe1bbd0",
-  ClientInput_hashOuterMask: "0xe1bbf0",
-  ClientInput_ctor: "0xa95798",
-  BattleMode_getInstance: "0x8c5130",
-  LogicBattleModeClient_getOwnCharacter: "0xac3934",
   HomePage_ctor: "0x86f974",
   StringTable_getMovieClip: "0x8df4dc",
   TextField_setText: "0xbb5c40",
