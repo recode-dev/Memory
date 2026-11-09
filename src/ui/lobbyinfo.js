@@ -9,12 +9,20 @@ import { allocScString, withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
 
 let _init = false;
-let started = false;
 let field = null;
+let started = false;
 function repaint() {
   if (flags.hideLobbyInfo) return;
   const phase = Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod;
   withScString(paintGradient(constants.Badge_text, phase, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
+}
+function applyVisibility() {
+  if (field === null) return;
+  if (flags.hideLobbyInfo) {
+    withScString("", (sc) => setText(field, sc));
+    return;
+  }
+  repaint();
 }
 let uiSc = Memory.allocUtf8String(constants.Badge_sc);
 let popover = Memory.allocUtf8String(constants.Badge_clip);
@@ -35,7 +43,7 @@ export function setupLobbyInfo(base) {
       setTextColor(field, constants.Badge_color);
       withScString(paintGradient(constants.Badge_text, 0, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
       addChild(this.page, field);
-      setLobbyInfoField(field);
+      setLobbyInfoField(applyVisibility);
       if (started) return;
       started = true;
       setInterval(repaint, constants.Badge_shineMs);

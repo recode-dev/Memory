@@ -1,13 +1,8 @@
 import { flags, toggleFlag } from "../utils/flags.js";
-import { setVisibility } from "../natives/functions.js";
 
-let field = null;
-function apply() {
-  if (field === null) return;
-  setVisibility(field, flags.hideLobbyInfo ? 0 : 1);
-}
-export function setLobbyInfoField(node) {
-  field = node;
+let apply = null;
+export function setLobbyInfoField(applyVisibility) {
+  apply = applyVisibility;
   apply();
 }
 export function toggleHideLobbyInfo() {
