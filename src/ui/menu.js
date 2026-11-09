@@ -220,7 +220,7 @@ function build() {
   });
   const info = iconArt(constants.Panel_infoClip, [], constants.Panel_infoChild);
   setXY(info, 0, 0);
-  attach(clip, info, layout.closeX - constants.Panel_infoGap, layout.closeY, constants.Panel_infoScale, function() {
+  attach(clip, info, layout.closeX - constants.Panel_infoGap, layout.closeY + layout.iconDy, constants.Panel_infoScale, function() {
   });
   const gear = iconArt(constants.Panel_gearClip, constants.Panel_gearPath, constants.Panel_gearChild);
   setXY(gear, 0, 0);
@@ -232,7 +232,7 @@ function build() {
   setScale(holder, holder.add(structs.DisplayObject_scaleX).readFloat() + constants.Panel_badgeScale);
   setXY(holder, constants.Panel_badgeX, constants.Panel_badgeY);
   addChild(gear, holder);
-  attach(clip, gear, layout.closeX - constants.Panel_gearGap, layout.closeY, constants.Panel_gearScale, function() {
+  attach(clip, gear, layout.closeX - constants.Panel_gearGap, layout.closeY + layout.iconDy, constants.Panel_gearScale, function() {
   });
   shine();
   if (!shining) {

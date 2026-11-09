@@ -73,6 +73,7 @@ export let constants = {
     footerFont: 19,
     closeX: 265.05,
     closeY: -165.25,
+    iconDy: -1.35,
     closeSize: 1.05
   },
   Panel_pageButtons: [
