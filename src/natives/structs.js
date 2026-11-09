@@ -1,5 +1,8 @@
 export let structs = {
   ClientInput_type: "0x8",
+  ClientInput_token: "0x34",
+  BattleMode_hashEnabled: "0x70",
+  BattleMode_hashKey: "0x60",
   ClientInput_x: "0xc",
   ClientInput_y: "0x10",
   BattleScreen_afkTime: "0xfa0",
