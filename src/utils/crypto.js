@@ -9,6 +9,12 @@ const SHA256_K = [
   0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
 ];
 
+const BLOCK_SIZE = 128;
+const WORD_SIZE = 64;
+const KEY_SIZE = 16;
+const FILL_SIZE = 48;
+const DIGEST_SIZE = 32;
+
 const rotr = (x, n) => ((x >>> n) | (x << (32 - n))) >>> 0;
 
 function compress(block) {
@@ -17,7 +23,7 @@ function compress(block) {
   ]);
   const v = new Int32Array(8);
   const w = new Int32Array(64);
-  for (let off = 0; off < block.length; off += 64) {
+  for (let off = 0; off < block.length; off += WORD_SIZE) {
     for (let i = 0; i < 16; i++) {
       const j = off + (i << 2);
       w[i] = (block[j] << 24) | (block[j + 1] << 16) | (block[j + 2] << 8) | block[j + 3];
@@ -48,7 +54,7 @@ function compress(block) {
     }
     for (let i = 0; i < 8; i++) hv[i] += v[i];
   }
-  const out = new Uint8Array(32);
+  const out = new Uint8Array(DIGEST_SIZE);
   for (let i = 0; i < 8; i++) {
     out[i * 4] = (hv[i] >>> 24) & 0xff;
     out[i * 4 + 1] = (hv[i] >>> 16) & 0xff;
@@ -58,31 +64,34 @@ function compress(block) {
   return out;
 }
 
+function padBlock(block, length) {
+  block[length] = 0x80;
+  new DataView(block.buffer).setUint32(BLOCK_SIZE - 4, length * 8);
+}
+
 export function inputToken(secrets, typeConst, snapshot) {
-  const mixed = new Uint8Array(16);
-  const outerKey = new Uint8Array(16);
-  for (let i = 0; i < 16; i++) {
+  const mixed = new Uint8Array(KEY_SIZE);
+  const outerKey = new Uint8Array(KEY_SIZE);
+  for (let i = 0; i < KEY_SIZE; i++) {
     mixed[i] = secrets.key16[i] ^ secrets.maskIn[i];
     outerKey[i] = secrets.key16[i] ^ secrets.maskOut[i];
   }
-  const data = new Uint8Array(16);
-  for (let i = 0; i < 16; i++) data[i] = snapshot[(i + 4) & 15];
-  const inner = new Uint8Array(128);
+  const data = new Uint8Array(KEY_SIZE);
+  for (let i = 0; i < KEY_SIZE; i++) data[i] = snapshot[(i + 4) & (KEY_SIZE - 1)];
+  const inner = new Uint8Array(BLOCK_SIZE);
+  const typeAt = KEY_SIZE + FILL_SIZE + KEY_SIZE;
   inner.set(mixed, 0);
-  inner.fill(0x36, 16, 64);
-  inner.set(data, 64);
-  inner.set(typeConst, 80);
-  inner[84] = 0x80;
-  inner[126] = 0x02;
-  inner[127] = 0xa0;
-  const innerDigest = compress(inner);
-  const outer = new Uint8Array(128);
+  inner.fill(0x36, KEY_SIZE, KEY_SIZE + FILL_SIZE);
+  inner.set(data, KEY_SIZE + FILL_SIZE);
+  inner.set(typeConst, typeAt);
+  padBlock(inner, typeAt + typeConst.length);
+  const digest = compress(inner);
+  const outer = new Uint8Array(BLOCK_SIZE);
   outer.set(outerKey, 0);
-  outer.fill(0x5c, 16, 64);
-  outer.set(innerDigest, 64);
-  outer[96] = 0x80;
-  outer[126] = 0x03;
-  const digest = compress(outer);
-  const value = (digest[0] | ((digest[1] & 0x7f) << 8)) >>> 0;
+  outer.fill(0x5c, KEY_SIZE, KEY_SIZE + FILL_SIZE);
+  outer.set(digest, KEY_SIZE + FILL_SIZE);
+  padBlock(outer, KEY_SIZE + FILL_SIZE + DIGEST_SIZE);
+  const token = compress(outer);
+  const value = (token[0] | ((token[1] & 0x7f) << 8)) >>> 0;
   return value < 2 ? 1 : value;
 }

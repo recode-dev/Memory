@@ -8,9 +8,6 @@ function showAmmo(character) {
   if (clip.isNull()) return;
   clip.add(structs.DisplayObject_visible).writeU8(1);
 }
-export function isAntiAfkEnabled() {
-  return flags.antiAfk;
-}
 export function registerButton(button, action) {
   buttons.set(button.toString(), action);
 }
