@@ -100,6 +100,8 @@ export let constants = {
   AutoSpin_step: Math.PI / 4,
   AutoSpin_turn: Math.PI * 2,
   AutoSpin_radius: 100,
+  AntiAfk_intervalMs: 10000,
+  AntiAfk_moveDelta: 1,
   Panel_soonLabel: "",
   Menu_pages: 4,
   Panel_gearClip: "popup_profile",

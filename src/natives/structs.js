@@ -7,6 +7,8 @@ export let structs = {
   BattleMode_inputManager: "0x58",
   BattleMode_hashKey: "0x60",
   BattleMode_hashEnabled: "0x70",
+  LogicBattleModeClient_tileMap: "0xf8",
+  TileMap_widthUnits: "0xcc",
   TextField_baseFontSize: "0x8e",
   TextField_align: "0x96",
   TextField_flags: "0x90",
