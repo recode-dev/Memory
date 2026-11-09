@@ -89,7 +89,7 @@ export let constants = {
   Panel_hideUltiAimingLabel: "Hide Ulti Aiming",
   ClientInput_ultiAimingType: 5,
   ClientInput_moveType: 2,
-  AntiAfk_idleSeconds: 9,
+  AntiAfk_idleSeconds: 10,
   ClientInput_recordSize: 0x48,
   ClientInput_hiddenType: 6,
   Panel_soonLabel: "",
