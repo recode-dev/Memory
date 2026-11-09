@@ -1,29 +1,40 @@
 import { offsets } from "../natives/offsets.js";
 import { structs } from "../natives/structs.js";
+import { constants } from "../natives/constants.js";
 import { flags, toggleFlag } from "../utils/flags.js";
+import { battleModeGetInstance, clientInputCtor, clientInputManagerAddInput, getOwnCharacter } from "../natives/functions.js";
 
-let base = null;
-let listener = null;
+function sendMoveInput() {
+  const mode = battleModeGetInstance();
+  const character = getOwnCharacter(mode.add(structs.BattleMode_battleClient).readPointer());
+  if (character.isNull()) return;
+  const input = Memory.alloc(constants.ClientInput_recordSize);
+  clientInputCtor(input, constants.ClientInput_moveType);
+  input.add(structs.ClientInput_x).writeInt(character.add(structs.Character_posX).readInt());
+  input.add(structs.ClientInput_y).writeInt(character.add(structs.Character_posY).readInt());
+  clientInputManagerAddInput(mode.add(structs.BattleMode_inputManager).readPointer(), input);
+}
+
+const handler = new NativeCallback(function (screen) {
+  const idle = screen.add(structs.BattleScreen_afkTime).readFloat();
+  if (idle > constants.AntiAfk_idleSeconds) sendMoveInput();
+  return 0;
+}, "bool", ["pointer"]);
+
+let address = null;
+let replaced = false;
 
 function apply() {
-  if (flags.antiAfk === (listener !== null)) return;
+  if (flags.antiAfk === replaced) return;
   if (flags.antiAfk) {
-    listener = Interceptor.attach(base.add(offsets.BattleScreen_isAFK), {
-      onEnter(args) {
-        this.screen = args[0];
-      },
-      onLeave(retval) {
-        this.screen.add(structs.BattleScreen_afkTime).writeFloat(0);
-        retval.replace(0);
-      }
-    });
+    Interceptor.replace(address, handler);
   } else {
-    listener.detach();
-    listener = null;
+    Interceptor.revert(address);
   }
+  replaced = flags.antiAfk;
 }
-export function setupAntiAfk(moduleBase) {
-  base = moduleBase;
+export function setupAntiAfk(base) {
+  address = base.add(offsets.BattleScreen_isAFK);
   apply();
 }
 export function toggleAntiAfk() {
