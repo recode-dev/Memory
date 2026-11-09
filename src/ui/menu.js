@@ -13,7 +13,7 @@ import { toggleHideUltiAiming } from "../features/hideultiaiming.js";
 import { toggleAutoSpin } from "../features/autospin.js";
 
 let slot = Memory.alloc(Process.pointerSize);
-let scPath = Memory.allocUtf8String(constants.Menu_sc);
+let scPath = Memory.allocUtf8String(constants.Ui_sc);
 let empty = null;
 let clipName = null;
 let panelSc = null;
@@ -31,12 +31,19 @@ let pending = new Map();
 let footerField = null;
 let pageLabel = null;
 let page = 0;
+const slots = [
+  { label: constants.Panel_ammoLabel, flag: "enemyAmmo" },
+  { label: constants.Panel_afkLabel, flag: "antiAfk" },
+  { label: constants.Panel_hideLobbyLabel, flag: "hideLobbyInfo", toggle: toggleHideLobbyInfo },
+  { label: constants.Panel_hideUltiAimingLabel, flag: "hideUltiAiming", toggle: toggleHideUltiAiming },
+  { label: constants.Panel_autoSpinLabel, flag: "autoSpin", toggle: toggleAutoSpin }
+];
 function init() {
   if (ready) return;
   ready = true;
   empty = allocScString("");
   clipName = allocScString(constants.Panel_clip);
-  panelSc = allocScString(constants.Panel_sc);
+  panelSc = allocScString(constants.Ui_sc);
   titleSlot = Memory.allocUtf8String(constants.Panel_titleField);
   txtSlot = Memory.allocUtf8String(constants.Panel_txtField);
   plateSlot = Memory.allocUtf8String(constants.Panel_plateTxtField);
@@ -77,6 +84,7 @@ function attach(node, art, x, y, scale, action) {
   liveButtons.push(button);
   return button;
 }
+function noop() {}
 function dropPopup() {
   popup = null;
   clip = null;
@@ -118,30 +126,15 @@ function slotIndex(position) {
   return page * pageSize() + position;
 }
 function slotLabel(index) {
-  if (index === 0) return constants.Panel_ammoLabel;
-  if (index === 1) return constants.Panel_afkLabel;
-  if (index === 2) return constants.Panel_hideLobbyLabel;
-  if (index === 3) return constants.Panel_hideUltiAimingLabel;
-  if (index === 4) return constants.Panel_autoSpinLabel;
-  return constants.Panel_soonLabel;
+  return index < slots.length ? slots[index].label : constants.Panel_soonLabel;
 }
 function slotOn(index) {
-  if (index === 0) return flags.enemyAmmo;
-  if (index === 1) return flags.antiAfk;
-  if (index === 2) return flags.hideLobbyInfo;
-  if (index === 3) return flags.hideUltiAiming;
-  if (index === 4) return flags.autoSpin;
-  return false;
+  return index < slots.length ? flags[slots[index].flag] : false;
 }
-function flagName(index) {
-  if (index === 0) return "enemyAmmo";
-  return "antiAfk";
-}
-function activate(target) {
-  if (target === 2) toggleHideLobbyInfo();
-  else if (target === 3) toggleHideUltiAiming();
-  else if (target === 4) toggleAutoSpin();
-  else toggleFlag(flagName(target));
+function activate(index) {
+  const slot = slots[index];
+  if (slot.toggle) slot.toggle();
+  else toggleFlag(slot.flag);
 }
 function styleLabel(field, size) {
   field.add(structs.TextField_baseFontSize).writeU8(size);
@@ -216,7 +209,7 @@ function build() {
     const art = plate();
     attach(clip, art, layout.colX[column] + layout.featX, layout.rowY[line] + layout.featY, layout.featSize, function() {
       const target = slotIndex(index);
-      if (target > 4) return;
+      if (!slots[target]) return;
       activate(target);
       paintSlot(index, 0);
     });
@@ -241,8 +234,7 @@ function build() {
   paintPageButtons();
   const footer = child(clip, constants.Panel_footerSlot);
   setXY(footer, 0, 0);
-  attach(clip, footer, 0, layout.footerY, layout.footerSize, function() {
-  });
+  attach(clip, footer, 0, layout.footerY, layout.footerSize, noop);
   footerField = getTextFieldByName(footer, plateSlot);
   footerField.add(structs.TextField_autoAdjustFontSize).writeU8(constants.Panel_labelAutoFit);
   setFontSize(footerField, layout.footerFont);
@@ -253,8 +245,7 @@ function build() {
   });
   const info = iconArt(constants.Panel_infoClip, [], constants.Panel_infoChild);
   setXY(info, 0, 0);
-  attach(clip, info, layout.closeX - constants.Panel_infoGap, layout.closeY + layout.iconDy, constants.Panel_infoScale, function() {
-  });
+  attach(clip, info, layout.closeX - constants.Panel_infoGap, layout.closeY + layout.iconDy, constants.Panel_infoScale, noop);
   const gear = iconArt(constants.Panel_gearClip, constants.Panel_gearPath, constants.Panel_gearChild);
   setXY(gear, 0, 0);
   const cover = iconArt(constants.Panel_badgeClip, constants.Panel_badgePath, constants.Panel_badgeChild);
@@ -265,8 +256,7 @@ function build() {
   setScale(holder, holder.add(structs.DisplayObject_scaleX).readFloat() + constants.Panel_badgeScale);
   setXY(holder, constants.Panel_badgeX, constants.Panel_badgeY);
   addChild(gear, holder);
-  attach(clip, gear, layout.closeX - constants.Panel_gearGap, layout.closeY + layout.iconDy, constants.Panel_gearScale, function() {
-  });
+  attach(clip, gear, layout.closeX - constants.Panel_gearGap, layout.closeY + layout.iconDy, constants.Panel_gearScale, noop);
   shine();
   startShine();
 }

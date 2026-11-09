@@ -11,10 +11,12 @@ import { paintGradient } from "./gradient.js";
 let _init = false;
 let field = null;
 let started = false;
+function paintBadge(phase) {
+  withScString(paintGradient(constants.Badge_text, phase, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
+}
 function repaint() {
   if (flags.hideLobbyInfo) return;
-  const phase = Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod;
-  withScString(paintGradient(constants.Badge_text, phase, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
+  paintBadge(Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod);
 }
 function applyVisibility() {
   if (flags.hideLobbyInfo) {
@@ -23,7 +25,7 @@ function applyVisibility() {
   }
   repaint();
 }
-let uiSc = Memory.allocUtf8String(constants.Badge_sc);
+let uiSc = Memory.allocUtf8String(constants.Ui_sc);
 let popover = Memory.allocUtf8String(constants.Badge_clip);
 export function setupLobbyInfo(base) {
   if (_init) return;
@@ -40,7 +42,7 @@ export function setupLobbyInfo(base) {
       setFontSize(field, constants.Badge_fontSize);
       field.add(structs.TextField_flags).writeU32(field.add(structs.TextField_flags).readU32() | constants.Badge_outlineFlag);
       setTextColor(field, constants.Badge_color);
-      withScString(paintGradient(constants.Badge_text, 0, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
+      paintBadge(0);
       addChild(this.page, field);
       setLobbyInfoField(applyVisibility);
       if (started) return;

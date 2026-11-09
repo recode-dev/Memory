@@ -1,7 +1,7 @@
 import { offsets } from "../natives/offsets.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
-import { battleModeGetInstance, clientInputCtor, clientInputManagerAddInput, malloc } from "../natives/functions.js";
+import { battleModeGetInstance, clientInputCtor, clientInputManagerAddInput, malloc, setClientPredictionMoveTo } from "../natives/functions.js";
 import { sha256 } from "../utils/crypto.js";
 
 let base = null;
@@ -67,4 +67,12 @@ export function sendCommand(cmdType, fillFn) {
   fillFn(input);
   signClientInput(input, battle);
   clientInputManagerAddInput(manager, input);
+}
+
+export function sendMove(logic, x, y) {
+  setClientPredictionMoveTo(logic, x, y, 1);
+  sendCommand(constants.ClientInput_moveType, (input) => {
+    input.add(structs.ClientInput_x).writeS32(x);
+    input.add(structs.ClientInput_y).writeS32(y);
+  });
 }

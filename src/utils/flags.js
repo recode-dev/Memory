@@ -7,5 +7,4 @@ export let flags = {
 };
 export function toggleFlag(name) {
   flags[name] = !flags[name];
-  return flags[name];
 }

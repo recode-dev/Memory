@@ -8,7 +8,7 @@ let labelField = Memory.allocUtf8String(constants.Menu_modButtonField);
 let button = null;
 export function makeMenuButton(action) {
   if (button !== null) return button;
-  const sc = Memory.allocUtf8String(constants.Menu_sc);
+  const sc = Memory.allocUtf8String(constants.Ui_sc);
   const clipName = Memory.allocUtf8String(constants.Menu_modButtonClip);
   const clip = getMovieClip(sc, clipName, 0);
   button = malloc(constants.Menu_buttonSize);
