@@ -14,6 +14,9 @@ export function isAntiAfkEnabled() {
 export function registerButton(button, action) {
   buttons.set(button.toString(), action);
 }
+export function unregisterButton(button) {
+  buttons.delete(button.toString());
+}
 export function buttonAction(button) {
   return buttons.get(button.toString());
 }

@@ -1,5 +1,5 @@
 import { offsets } from "../natives/offsets.js";
-import { buttonAction, registerButton } from "../natives/callbacks.js";
+import { buttonAction, registerButton, unregisterButton } from "../natives/callbacks.js";
 import { addChild, createBlingTextField, customButtonCtor, customButtonSetMovieClip, getMovieClip, guiGetInstance, guiShowPopup, getTextFieldByName, gotoAndStopFrameIndex, malloc, movieClipSetText, popupClose, popupCtor, setChildVisible, setFontSize, setScale, setText, setTextColor, setXY, spriteCtor } from "../natives/functions.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
@@ -23,6 +23,7 @@ let txtSlot = null;
 let plateSlot = null;
 let txtSc = null;
 let gridFields = [];
+let liveButtons = [];
 let pageButtons = [];
 let pending = new Map();
 let footerField = null;
@@ -71,11 +72,20 @@ function attach(node, art, x, y, scale, action) {
   setXY(button, x, y);
   addChild(node, button);
   registerButton(button, action);
+  liveButtons.push(button);
   return button;
 }
 function closePopup() {
-  popupClose(popup);
+  const closing = popup;
   popup = null;
+  clip = null;
+  footerField = null;
+  pageLabel = null;
+  gridFields = [];
+  pageButtons = [];
+  for (const button of liveButtons) unregisterButton(button);
+  liveButtons = [];
+  popupClose(closing);
 }
 function shine() {
   if (popup === null) return;
@@ -232,6 +242,10 @@ function build() {
 }
 function togglePanel() {
   init();
+  if (popup !== null) {
+    closePopup();
+    return;
+  }
   build();
 }
 let _init = false;
