@@ -90,7 +90,7 @@ export let constants = {
   Panel_autoSpinLabel: "Auto Spin",
   ClientInput_moveType: 2,
   ClientInput_recordSize: 0x48,
-  Spinner_radius: 100,
+  Spinner_radius: 1,
   Spinner_angleStep: 0.09,
   Spinner_intervalMs: 50,
   ClientInput_ultiAimingType: 5,
