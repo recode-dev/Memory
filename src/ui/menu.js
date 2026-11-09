@@ -47,7 +47,7 @@ function child(node, name) {
     const entry = names.add(index * 8).readPointer();
     if (!entry.isNull() && entry.readUtf8String() === name) return kids.add(index * 8).readPointer();
   }
-  throw new Error("panel: no child " + name);
+  return null;
 }
 function iconArt(clipName, path, childName) {
   let node = getMovieClip(scPath, Memory.allocUtf8String(clipName), 0);
