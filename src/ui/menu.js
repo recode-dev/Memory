@@ -17,6 +17,7 @@ let panelSc = null;
 let ready = false;
 let shining = false;
 let popup = null;
+let popupClass = null;
 let clip = null;
 let titleSlot = null;
 let txtSlot = null;
@@ -72,12 +73,16 @@ function attach(node, art, x, y, scale, action) {
   setScale(art, 1);
   setXY(button, x, y);
   addChild(node, button);
-  registerButton(button, action);
+  registerButton(button, function() {
+    if (popup === null) return;
+    action();
+  });
   liveButtons.push(button);
   return button;
 }
 function dropPopup() {
   popup = null;
+  popupClass = null;
   clip = null;
   footerField = null;
   pageLabel = null;
@@ -175,6 +180,7 @@ function build() {
   pageButtons = [];
   popup = malloc(constants.Menu_popupSize);
   popupCtor(popup, clipName, 0, 0, empty, empty, empty, empty, panelSc);
+  popupClass = popup.readPointer();
   clip = popup.add(structs.Popup_clip).readPointer();
   clip.add(structs.DisplayObject_scaleX).writeFloat(constants.Panel_scaleX);
   clip.add(structs.DisplayObject_scaleY).writeFloat(constants.Panel_scaleY);
@@ -256,8 +262,11 @@ function build() {
 function togglePanel() {
   init();
   if (popup !== null) {
-    closePopup();
-    return;
+    if (popup.readPointer().equals(popupClass)) {
+      closePopup();
+      return;
+    }
+    dropPopup();
   }
   build();
 }
