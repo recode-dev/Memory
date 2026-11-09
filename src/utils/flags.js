@@ -3,7 +3,7 @@ export let flags = {
   antiAfk: false,
   hideLobbyInfo: false,
   hideUltiAiming: false,
-  autoSpinner: false
+  autoSpin: false
 };
 export function toggleFlag(name) {
   flags[name] = !flags[name];

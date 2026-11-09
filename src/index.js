@@ -4,7 +4,7 @@ import { setupLobbyInfo } from "./ui/lobbyinfo.js";
 import { setupAntiAfk } from "./features/antiafk.js";
 import { setupMenu } from "./ui/menu.js";
 import { setupAmmo } from "./features/ammo.js";
-import { setupAutoSpinner } from "./features/autospinner.js";
+import { setupAutoSpin } from "./features/autospin.js";
 import { setupHideUltiAiming } from "./features/hideultiaiming.js";
 
 let module = Process.getModuleByName("Nulls Brawl");
@@ -14,5 +14,5 @@ setupLobbyInfo(module.base);
 setupAntiAfk(module.base);
 setupMenu(module.base);
 setupAmmo(module.base);
-setupAutoSpinner(module.base);
+setupAutoSpin(module.base);
 setupHideUltiAiming(module.base);

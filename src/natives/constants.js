@@ -87,7 +87,7 @@ export let constants = {
   Panel_afkLabel: "Anti AFK",
   Panel_hideLobbyLabel: "Hide Lobby Info",
   Panel_hideUltiAimingLabel: "Hide Ulti Aiming",
-  Panel_autoSpinnerLabel: "Auto Spinner",
+  Panel_autoSpinLabel: "Auto Spin",
   ClientInput_moveType: 2,
   ClientInput_recordSize: 0x48,
   Spinner_radius: 100,

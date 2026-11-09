@@ -26,7 +26,7 @@ function sendMove(x, y) {
 }
 
 function spin() {
-  if (!flags.autoSpinner || client === null || logicBattle() === null) return;
+  if (!flags.autoSpin || client === null || logicBattle() === null) return;
   const character = getOwnCharacter(client);
   if (character.isNull()) return;
   if (startX === 0) {
@@ -41,7 +41,7 @@ function spin() {
 }
 
 let _init = false;
-export function setupAutoSpinner(base) {
+export function setupAutoSpin(base) {
   if (_init) return;
   _init = true;
   if (offsets.GameScreen_getLogicBattle !== "0x0") {
