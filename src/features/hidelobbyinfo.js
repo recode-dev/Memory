@@ -1,4 +1,4 @@
-import { flags, toggleFlag } from "../utils/flags.js";
+import { toggleFlag } from "../utils/flags.js";
 
 let apply = null;
 export function setLobbyInfoField(applyVisibility) {

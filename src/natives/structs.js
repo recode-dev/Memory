@@ -6,7 +6,6 @@ export let structs = {
   TextField_boundsTop: "0xb8",
   TextField_boundsRight: "0xbc",
   TextField_boundsBottom: "0xc0",
-  TextField_fontOutline: "0x90",
   DisplayObject_visible: "0x8",
   Popup_clip: "0x90",
   Clip_childTable: "0x90",
