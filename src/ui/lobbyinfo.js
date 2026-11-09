@@ -1,8 +1,8 @@
 import { offsets } from "../natives/offsets.js";
-import { addChild, createBlingTextField, getMovieClip, setFontSize, setText, setTextColor, setVisibility, setXY } from "../natives/functions.js";
+import { addChild, createBlingTextField, getMovieClip, setFontSize, setText, setTextColor, setXY } from "../natives/functions.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
-import { flags } from "../utils/flags.js";
+import { setLobbyInfoField } from "../features/hidelobbyinfo.js";
 import { resolveGradient } from "../natives/datatables.js";
 import { allocScString, withScString } from "../core/scstring.js";
 import { paintGradient } from "./gradient.js";
@@ -16,10 +16,6 @@ function repaint() {
 }
 let uiSc = Memory.allocUtf8String(constants.Badge_sc);
 let popover = Memory.allocUtf8String(constants.Badge_clip);
-export function syncLobbyInfo() {
-  if (field === null) return;
-  setVisibility(field, flags.hideLobbyInfo ? 0 : 1);
-}
 export function setupLobbyInfo(base) {
   if (_init) return;
   _init = true;
@@ -37,7 +33,7 @@ export function setupLobbyInfo(base) {
       setTextColor(field, constants.Badge_color);
       withScString(paintGradient(constants.Badge_text, 0, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
       addChild(this.page, field);
-      syncLobbyInfo();
+      setLobbyInfoField(field);
       if (started) return;
       started = true;
       setInterval(repaint, constants.Badge_shineMs);
