@@ -9,7 +9,7 @@ export let offsets = {
   LogicBattleModeClient_setClientPredictionMoveTo: "0xac3a58",
   LogicGameObjectClient_getX: "0xa23afc",
   LogicGameObjectClient_getY: "0xa23b04",
-  GameScreen_getLogicBattle: "0x0",
+  GameScreen_getLogicBattle: "0x7b905c",
   HomePage_ctor: "0x86f974",
   StringTable_getMovieClip: "0x8df4dc",
   TextField_setText: "0xbb5c40",
