@@ -83,6 +83,7 @@ export let constants = {
   Panel_title: "MemoryUtils",
   Panel_ammoLabel: "Show Enemy Ammo",
   Panel_afkLabel: "Anti AFK",
+  Panel_hideLobbyLabel: "Hide Lobby Info",
   Panel_soonLabel: "",
   Menu_pages: 4,
   Panel_gearClip: "popup_profile",

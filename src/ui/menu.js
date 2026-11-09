@@ -8,6 +8,7 @@ import { resolveGradient } from "../natives/datatables.js";
 import { paintGradient } from "./gradient.js";
 import { flags, toggleFlag } from "../utils/flags.js";
 import { makeMenuButton } from "./menubutton.js";
+import { toggleHideLobbyInfo } from "../features/hidelobbyinfo.js";
 
 let slot = Memory.alloc(Process.pointerSize);
 let scPath = Memory.allocUtf8String(constants.Menu_sc);
@@ -113,13 +114,17 @@ function slotIndex(position) {
   return page * pageSize() + position;
 }
 function slotLabel(index) {
-  return index === 0 ? constants.Panel_ammoLabel : index === 1 ? constants.Panel_afkLabel : constants.Panel_soonLabel;
+  return index === 0 ? constants.Panel_ammoLabel : index === 1 ? constants.Panel_afkLabel : index === 2 ? constants.Panel_hideLobbyLabel : constants.Panel_soonLabel;
 }
 function slotOn(index) {
-  return index === 0 ? flags.enemyAmmo : index === 1 ? flags.antiAfk : false;
+  return index === 0 ? flags.enemyAmmo : index === 1 ? flags.antiAfk : index === 2 ? flags.hideLobbyInfo : false;
 }
 function flagName(index) {
   return index === 0 ? "enemyAmmo" : "antiAfk";
+}
+function activate(target) {
+  if (target === 2) toggleHideLobbyInfo();
+  else toggleFlag(flagName(target));
 }
 function styleLabel(field, size) {
   field.add(structs.TextField_baseFontSize).writeU8(size);
@@ -201,10 +206,9 @@ function build() {
     const art = plate();
     attach(clip, art, layout.colX[column] + layout.featX, layout.rowY[line] + layout.featY, layout.featSize, function() {
       const target = slotIndex(index);
-      if (target < 2) {
-        toggleFlag(flagName(target));
-        paintSlot(index, 0);
-      }
+      if (target > 2) return;
+      activate(target);
+      paintSlot(index, 0);
     });
     const field = getTextFieldByName(art, txtSlot);
     styleLabel(field, layout.featFont);
