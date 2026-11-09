@@ -8,9 +8,9 @@ let _init = false;
 export function setupStaticEmoji(base) {
   if (_init) return;
   _init = true;
-  Interceptor.attach(base.add(offsets.MovieClip_getExport), {
+  Interceptor.attach(base.add(offsets.StringTable_getMovieClip), {
     onEnter(args) {
-      this.emoji = args[1].readCString().startsWith(constants.Emoji_sc);
+      this.emoji = args[0].readCString().includes(constants.Emoji_sc);
     },
     onLeave(retval) {
       if (!flags.staticEmoji || !this.emoji || retval.isNull()) return;
