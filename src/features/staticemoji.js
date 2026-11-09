@@ -1,15 +1,15 @@
 import { offsets } from "../natives/offsets.js";
-import { gotoAndStopFrameIndex } from "../natives/functions.js";
-import { flags, toggleFlag } from "../utils/flags.js";
 import { constants } from "../natives/constants.js";
+import { flags, toggleFlag } from "../utils/flags.js";
+import { gotoAndStopFrameIndex } from "../natives/functions.js";
 
 let _init = false;
 export function setupStaticEmoji(base) {
   if (_init) return;
   _init = true;
-  Interceptor.attach(base.add(offsets.StringTable_getMovieClip), {
+  Interceptor.attach(base.add(offsets.MovieClip_getExport), {
     onEnter(args) {
-      this.emoji = args[0].readCString().includes(constants.Emoji_sc);
+      this.emoji = args[1].readCString().startsWith(constants.Emoji_sc);
     },
     onLeave(retval) {
       if (!flags.staticEmoji || !this.emoji || retval.isNull()) return;
@@ -17,7 +17,6 @@ export function setupStaticEmoji(base) {
     }
   });
 }
-
 export function toggleStaticEmoji() {
   toggleFlag("staticEmoji");
 }

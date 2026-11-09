@@ -1,5 +1,6 @@
 export let offsets = {
   HomePage_ctor: "0x86f974",
+  MovieClip_getExport: "0xbae288",
   StringTable_getMovieClip: "0x8df4dc",
   TextField_setText: "0xbb5c40",
   TextField_setFontSize: "0xbb5bec",
