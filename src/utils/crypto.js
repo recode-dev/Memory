@@ -1,4 +1,4 @@
-const K = [
+const k = [
   0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
   0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
   0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
@@ -57,12 +57,12 @@ export function sha256(bytes) {
     let g = h6;
     let h = h7;
     for (let i = 0; i < 64; i++) {
-      const S1 = (rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25)) >>> 0;
+      const s1 = (rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25)) >>> 0;
       const ch = ((e & f) ^ (~e & g)) >>> 0;
-      const t1 = (h + S1 + ch + K[i] + w[i]) >>> 0;
-      const S0 = (rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22)) >>> 0;
+      const t1 = (h + s1 + ch + k[i] + w[i]) >>> 0;
+      const s0 = (rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22)) >>> 0;
       const maj = ((a & b) ^ (a & c) ^ (b & c)) >>> 0;
-      const t2 = (S0 + maj) >>> 0;
+      const t2 = (s0 + maj) >>> 0;
       h = g;
       g = f;
       f = e;
