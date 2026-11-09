@@ -121,6 +121,7 @@ function slotLabel(index) {
   if (index === 1) return constants.Panel_afkLabel;
   if (index === 2) return constants.Panel_hideLobbyLabel;
   if (index === 3) return constants.Panel_hideUltiAimingLabel;
+  if (index === 4) return constants.Panel_autoSpinnerLabel;
   return constants.Panel_soonLabel;
 }
 function slotOn(index) {
@@ -128,6 +129,7 @@ function slotOn(index) {
   if (index === 1) return flags.antiAfk;
   if (index === 2) return flags.hideLobbyInfo;
   if (index === 3) return flags.hideUltiAiming;
+  if (index === 4) return flags.autoSpinner;
   return false;
 }
 function flagName(index) {
@@ -211,7 +213,7 @@ function build() {
     const art = plate();
     attach(clip, art, layout.colX[column] + layout.featX, layout.rowY[line] + layout.featY, layout.featSize, function() {
       const target = slotIndex(index);
-      if (target > 3) return;
+      if (target > 4) return;
       activate(target);
       paintSlot(index, 0);
     });
