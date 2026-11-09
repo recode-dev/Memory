@@ -264,11 +264,6 @@ export function setupMenu(base) {
       if (action) action();
     }
   });
-  Interceptor.attach(base.add(offsets.GenericPopup_onCloseButton), {
-    onEnter(args) {
-      if (popup !== null && args[0].equals(popup)) dropPopup();
-    }
-  });
   Interceptor.attach(base.add(offsets.HomePage_ctor), {
     onLeave() {
       makeMenuButton(togglePanel);
