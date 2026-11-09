@@ -18,7 +18,6 @@ let panelSc = null;
 let ready = false;
 let shining = false;
 let popup = null;
-let popupClass = null;
 let clip = null;
 let titleSlot = null;
 let txtSlot = null;
@@ -83,7 +82,6 @@ function attach(node, art, x, y, scale, action) {
 }
 function dropPopup() {
   popup = null;
-  popupClass = null;
   clip = null;
   footerField = null;
   pageLabel = null;
@@ -185,7 +183,6 @@ function build() {
   pageButtons = [];
   popup = malloc(constants.Menu_popupSize);
   popupCtor(popup, clipName, 0, 0, empty, empty, empty, empty, panelSc);
-  popupClass = popup.readPointer();
   clip = popup.add(structs.Popup_clip).readPointer();
   clip.add(structs.DisplayObject_scaleX).writeFloat(constants.Panel_scaleX);
   clip.add(structs.DisplayObject_scaleY).writeFloat(constants.Panel_scaleY);
@@ -263,14 +260,25 @@ function build() {
     setInterval(shine, constants.Menu_shineMs);
   }
 }
+function popupAlive() {
+  const gui = guiGetInstance();
+  const list = gui.add(constants.Gui_popupList).readPointer();
+  const count = gui.add(constants.Gui_popupCount).readS32();
+  for (let i = 0; i < count; i += 1) {
+    if (list.add(i * 8).readPointer().equals(popup)) return true;
+  }
+  return false;
+}
 function togglePanel() {
   init();
   if (popup !== null) {
-    if (popup.readPointer().equals(popupClass)) {
-      closePopup();
+    if (!popupAlive()) {
+      dropPopup();
+      build();
       return;
     }
-    dropPopup();
+    closePopup();
+    return;
   }
   build();
 }
