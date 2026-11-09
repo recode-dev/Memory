@@ -2,17 +2,17 @@ import { offsets } from "../natives/offsets.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { flags, toggleFlag } from "../utils/flags.js";
-import { battleModeGetInstance, clientAddInput, clientInputCtor, getOwnCharacter } from "../natives/functions.js";
+import { battleModeGetInstance, clientInputCtor, clientInputManagerAddInput, getOwnCharacter } from "../natives/functions.js";
 
 function sendMoveInput() {
-  const client = battleModeGetInstance().add(structs.BattleMode_battleClient).readPointer();
-  const character = getOwnCharacter(client);
+  const mode = battleModeGetInstance();
+  const character = getOwnCharacter(mode.add(structs.BattleMode_battleClient).readPointer());
   if (character.isNull()) return;
   const input = Memory.alloc(constants.ClientInput_recordSize);
   clientInputCtor(input, constants.ClientInput_moveType);
   input.add(structs.ClientInput_x).writeInt(character.add(structs.Character_posX).readInt());
   input.add(structs.ClientInput_y).writeInt(character.add(structs.Character_posY).readInt());
-  clientAddInput(client, input, character.add(structs.Character_inputPriority).readInt());
+  clientInputManagerAddInput(mode.add(structs.BattleMode_inputManager).readPointer(), input);
 }
 
 let lastSent = 0;

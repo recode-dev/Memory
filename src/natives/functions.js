@@ -29,7 +29,7 @@ export let malloc = null;
 export let battleModeGetInstance = null;
 export let getOwnCharacter = null;
 export let clientInputCtor = null;
-export let clientAddInput = null;
+export let clientInputManagerAddInput = null;
 let stageBase = null;
 export function stageInstance() {
   return stageBase.add(offsets.Stage_instance).readPointer();
@@ -38,7 +38,7 @@ export function initFunctions(base) {
   battleModeGetInstance = new NativeFunction(base.add(offsets.BattleMode_getInstance), "pointer", []);
   getOwnCharacter = new NativeFunction(base.add(offsets.LogicBattleModeClient_getOwnCharacter), "pointer", ["pointer"]);
   clientInputCtor = new NativeFunction(base.add(offsets.ClientInput_ctor), "void", ["pointer", "int"]);
-  clientAddInput = new NativeFunction(base.add(offsets.LogicBattleModeClient_addInput), "void", ["pointer", "pointer", "int"]);
+  clientInputManagerAddInput = new NativeFunction(base.add(offsets.ClientInputManager_addInput), "void", ["pointer", "pointer"]);
   getMovieClip = new NativeFunction(base.add(offsets.StringTable_getMovieClip), "pointer", ["pointer", "pointer", "ulong"]);
   setText = new NativeFunction(base.add(offsets.TextField_setText), "void", ["pointer", "pointer"]);
   setFontSize = new NativeFunction(base.add(offsets.TextField_setFontSize), "void", ["pointer", "uint16"]);
