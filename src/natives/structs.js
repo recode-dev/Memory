@@ -1,12 +1,6 @@
 export let structs = {
   ClientInput_type: "0x8",
-  ClientInput_x: "0xc",
-  ClientInput_y: "0x10",
   BattleScreen_afkTime: "0xfa0",
-  BattleMode_battleClient: "0x28",
-  BattleMode_inputManager: "0x58",
-  Character_posX: "0x30",
-  Character_posY: "0x34",
   TextField_baseFontSize: "0x8e",
   TextField_align: "0x96",
   TextField_flags: "0x90",
