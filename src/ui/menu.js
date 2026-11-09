@@ -103,6 +103,10 @@ function styleLabel(field, size) {
   field.add(structs.TextField_baseFontSize).writeU8(size);
   field.add(structs.TextField_align).writeU8(constants.Panel_labelAlign);
   field.add(structs.TextField_autoAdjustFontSize).writeU8(constants.Panel_labelAutoFit);
+  field.add(structs.TextField_boundsLeft).writeFloat(constants.Panel_labelLeft);
+  field.add(structs.TextField_boundsTop).writeFloat(constants.Panel_labelTop);
+  field.add(structs.TextField_boundsRight).writeFloat(constants.Panel_labelRight);
+  field.add(structs.TextField_boundsBottom).writeFloat(constants.Panel_labelBottom);
   setFontSize(field, size);
 }
 function paintRow(field, label, on, phase) {
@@ -155,7 +159,8 @@ function build() {
   popup = malloc(constants.Menu_popupSize);
   popupCtor(popup, clipName, 0, 0, empty, empty, empty, empty, panelSc);
   clip = popup.add(structs.Popup_clip).readPointer();
-  setScale(clip, constants.Panel_scale);
+  clip.add(structs.DisplayObject_scaleX).writeFloat(constants.Panel_scaleX);
+  clip.add(structs.DisplayObject_scaleY).writeFloat(constants.Panel_scaleY);
   for (const name of constants.Panel_hidden) {
     setChildVisible(clip, Memory.allocUtf8String(name), 0);
   }
@@ -196,6 +201,8 @@ function build() {
   attach(clip, footer, 0, layout.footerY, layout.footerSize, function() {
   });
   footerField = getTextFieldByName(footer, plateSlot);
+  footerField.add(structs.TextField_autoAdjustFontSize).writeU8(constants.Panel_labelAutoFit);
+  setFontSize(footerField, layout.footerFont);
   const close = child(clip, constants.Menu_closeField);
   setXY(close, 0, 0);
   attach(clip, close, layout.closeX, layout.closeY, layout.closeSize, function() {
