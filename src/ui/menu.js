@@ -9,7 +9,7 @@ import { paintGradient } from "./gradient.js";
 import { flags, toggleFlag } from "../utils/flags.js";
 import { makeMenuButton } from "./menubutton.js";
 import { toggleHideLobbyInfo } from "../features/hidelobbyinfo.js";
-import { toggleStaticEmoji } from "../features/staticemoji.js";
+import { staticEmojiIcon, toggleStaticEmoji } from "../features/staticemoji.js";
 
 let slot = Memory.alloc(Process.pointerSize);
 let scPath = Memory.allocUtf8String(constants.Menu_sc);
@@ -219,6 +219,13 @@ function build() {
     });
     const field = getTextFieldByName(art, txtSlot);
     styleLabel(field, layout.featFont);
+    if (index === 3) {
+      const icon = staticEmojiIcon();
+      if (icon !== null) {
+        field.add(structs.DisplayObject_visible).writeU8(0);
+        addChild(art, icon);
+      }
+    }
     gridFields.push(field);
   }
   paintPage();
