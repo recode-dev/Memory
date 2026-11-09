@@ -95,7 +95,6 @@ export let constants = {
   Panel_badgeScale: 0.15,
   Panel_gearGap: 104,
   Panel_gearScale: 0.85,
-  Panel_closeScale: 1,
   Panel_infoScale: 0.9555,
   Panel_infoClip: "friends_info",
   Panel_infoChild: "button_info",
