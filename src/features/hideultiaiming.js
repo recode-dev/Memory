@@ -7,14 +7,13 @@ let _init = false;
 export function setupHideUltiAiming(base) {
   if (_init) return;
   _init = true;
-  Interceptor.attach(base.add(offsets.ClientInput_ctor), {
+  Interceptor.attach(base.add(offsets.ClientInputManager_addInput), {
     onEnter(args) {
-      this.record = args[0];
-      this.aiming = args[1].toInt32() === constants.ClientInput_superAimType;
-    },
-    onLeave() {
-      if (!flags.hideUltiAiming || !this.aiming) return;
-      this.record.add(structs.ClientInput_type).writeS32(constants.ClientInput_noneType);
+      if (!flags.hideUltiAiming) return;
+      const type = args[1].add(structs.ClientInput_type);
+      if (type.readS32() === constants.ClientInput_ultiAimingType) {
+        type.writeS32(constants.ClientInput_hiddenType);
+      }
     }
   });
 }
