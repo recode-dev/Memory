@@ -9,6 +9,7 @@ import { paintGradient } from "./gradient.js";
 import { flags, toggleFlag } from "../utils/flags.js";
 import { makeMenuButton } from "./menubutton.js";
 import { toggleHideLobbyInfo } from "../features/hidelobbyinfo.js";
+import { toggleStaticEmoji } from "../features/staticemoji.js";
 
 let slot = Memory.alloc(Process.pointerSize);
 let scPath = Memory.allocUtf8String(constants.Menu_sc);
@@ -112,16 +113,25 @@ function slotIndex(position) {
   return page * pageSize() + position;
 }
 function slotLabel(index) {
-  return index === 0 ? constants.Panel_ammoLabel : index === 1 ? constants.Panel_afkLabel : index === 2 ? constants.Panel_hideLobbyLabel : constants.Panel_soonLabel;
+  if (index === 0) return constants.Panel_ammoLabel;
+  if (index === 1) return constants.Panel_afkLabel;
+  if (index === 2) return constants.Panel_hideLobbyLabel;
+  if (index === 3) return constants.Panel_staticEmojiLabel;
+  return constants.Panel_soonLabel;
 }
 function slotOn(index) {
-  return index === 0 ? flags.enemyAmmo : index === 1 ? flags.antiAfk : index === 2 ? flags.hideLobbyInfo : false;
+  if (index === 0) return flags.enemyAmmo;
+  if (index === 1) return flags.antiAfk;
+  if (index === 2) return flags.hideLobbyInfo;
+  if (index === 3) return flags.staticEmoji;
+  return false;
 }
 function flagName(index) {
   return index === 0 ? "enemyAmmo" : "antiAfk";
 }
 function activate(target) {
   if (target === 2) toggleHideLobbyInfo();
+  else if (target === 3) toggleStaticEmoji();
   else toggleFlag(flagName(target));
 }
 function styleLabel(field, size) {
@@ -203,7 +213,7 @@ function build() {
     const art = plate();
     attach(clip, art, layout.colX[column] + layout.featX, layout.rowY[line] + layout.featY, layout.featSize, function() {
       const target = slotIndex(index);
-      if (target > 2) return;
+      if (target > 3) return;
       activate(target);
       paintSlot(index, 0);
     });

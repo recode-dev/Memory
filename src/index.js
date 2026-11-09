@@ -4,6 +4,7 @@ import { setupLobbyInfo } from "./ui/lobbyinfo.js";
 import { setupAntiAfk } from "./features/antiafk.js";
 import { setupMenu } from "./ui/menu.js";
 import { setupAmmo } from "./features/ammo.js";
+import { setupStaticEmoji } from "./features/staticemoji.js";
 
 let module = Process.getModuleByName("Nulls Brawl");
 initFunctions(module.base);
@@ -12,3 +13,4 @@ setupLobbyInfo(module.base);
 setupAntiAfk(module.base);
 setupMenu(module.base);
 setupAmmo(module.base);
+setupStaticEmoji(module.base);
