@@ -11,6 +11,7 @@ export let constants = {
   Badge_x: 120,
   Badge_y: 90,
   Badge_fontSize: 14,
+  Badge_outlineFlag: 1,
   Badge_color: 4294967295,
   Badge_bandChars: 2,
   Badge_lightColor: 10197915,

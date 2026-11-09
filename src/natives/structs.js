@@ -1,6 +1,7 @@
 export let structs = {
   TextField_baseFontSize: "0x8e",
   TextField_align: "0x96",
+  TextField_flags: "0x90",
   TextField_autoAdjustFontSize: "0x98",
   TextField_boundsLeft: "0xb4",
   TextField_boundsTop: "0xb8",

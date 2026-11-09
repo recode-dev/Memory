@@ -1,6 +1,7 @@
 import { offsets } from "../natives/offsets.js";
 import { addChild, createBlingTextField, getMovieClip, setFontSize, setText, setTextColor, setXY } from "../natives/functions.js";
 import { constants } from "../natives/constants.js";
+import { structs } from "../natives/structs.js";
 import { setLobbyInfoField } from "../features/hidelobbyinfo.js";
 import { flags } from "../utils/flags.js";
 import { resolveGradient } from "../natives/datatables.js";
@@ -38,6 +39,7 @@ export function setupLobbyInfo(base) {
       field = createBlingTextField(clip, textName, resolveGradient(constants.Badge_gradientTable, constants.Badge_gradientId));
       setXY(field, constants.Badge_x, constants.Badge_y);
       setFontSize(field, constants.Badge_fontSize);
+      field.add(structs.TextField_flags).writeU32(field.add(structs.TextField_flags).readU32() | constants.Badge_outlineFlag);
       setTextColor(field, constants.Badge_color);
       withScString(paintGradient(constants.Badge_text, 0, constants.Badge_lightColor, constants.Badge_darkColor, constants.Badge_bandChars), (sc) => setText(field, sc));
       addChild(this.page, field);
