@@ -44,7 +44,7 @@ export let constants = {
   Panel_footer: "t.me/memoryutils",
   Panel_offColor: "FFFFFF",
   Panel_labelAlign: 0x12,
-  Panel_labelAutoFit: 1,
+  Panel_labelAutoFit: 0,
   Panel_rowClip: "country_item",
   Panel_pageColor: 4294967295,
   Panel_pageLabel: "Page",
@@ -74,7 +74,7 @@ export let constants = {
     { x: 220, delta: 1, label: "Next Page" }
   ],
   Panel_title: "MemoryUtils",
-  Panel_ammoLabel: "Show Enemy Ammo",
+  Panel_ammoLabel: "Enemy Ammo",
   Panel_afkLabel: "Anti AFK",
   Panel_soonLabel: "",
   Menu_pages: 4,
