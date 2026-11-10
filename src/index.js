@@ -10,11 +10,13 @@ import { setupHideUltiAiming } from "./features/hideultiaiming.js";
 import { setupAutoSpin } from "./features/autospin.js";
 import { setupAntiAutoShoot } from "./features/antiautoshoot.js";
 import { setupAntiAutoSuper } from "./features/antiautosuper.js";
+import { setupBlockNotify } from "./ui/blocknotify.js";
 
 let module = Process.getModuleByName("Nulls Brawl");
 initFunctions(module.base);
 setupCommands(module.base);
 setupBattleTick(module.base);
+setupBlockNotify();
 setupLicense(module);
 setupLobbyInfo(module.base);
 setupAntiAfk(module.base);

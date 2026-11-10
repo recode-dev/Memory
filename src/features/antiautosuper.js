@@ -2,6 +2,7 @@ import { offsets } from "../natives/offsets.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { flags, toggleFlag } from "../utils/flags.js";
+import { notifyBlock } from "../ui/blocknotify.js";
 
 let addInputAddress = null;
 let submitAddress = null;
@@ -35,7 +36,7 @@ function apply() {
       },
       onLeave() {
         if (!this.manager) return;
-        popIfLast(this.manager.add(structs.ClientInputManager_queue).readPointer(), this.input);
+        if (popIfLast(this.manager.add(structs.ClientInputManager_queue).readPointer(), this.input)) notifyBlock(constants.BlockNotify_superText);
       }
     });
     submitListener = Interceptor.attach(submitAddress, {
@@ -50,6 +51,7 @@ function apply() {
         const units = this.battle.add(structs.LogicBattleModeClient_pendingInputUnits);
         const count = units.add(structs.Vector_count).readS32();
         if (count > 0) units.add(structs.Vector_count).writeS32(count - 1);
+        notifyBlock(constants.BlockNotify_superText);
       }
     });
   } else {
