@@ -21,7 +21,7 @@ function apply() {
 }
 
 export function setupHideUltiAiming(base) {
-  address = base.add(offsets.ClientInput_ctor);
+  address = base.add(offsets.ClientInput_constructor_int);
   apply();
 }
 

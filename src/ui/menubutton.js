@@ -1,4 +1,4 @@
-import { customButtonCtor, customButtonSetMovieClip, getMovieClip, malloc, movieClipSetText, setVisibility, setXY, stageAddChild, stageInstance } from "../natives/functions.js";
+import { customButtonCtor, customButtonSetMovieClip, getMovieClip, malloc, movieClipSetText, setVisible, setXY, stageAddChild, stageInstance } from "../natives/functions.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { allocScString, destroyScString } from "../core/scstring.js";
@@ -18,8 +18,8 @@ export function makeMenuButton(action) {
   const label = allocScString(constants.Menu_modButtonLabel);
   movieClipSetText(clip, labelField, label);
   destroyScString(label);
-  button.add(structs.DisplayObject_touchable).writeU8(1);
-  setVisibility(button, 1);
+  button.add(structs.DisplayObject_interactive).writeU8(1);
+  setVisible(button, 1);
   stageAddChild(stageInstance(), button);
   registerButton(button, action);
   return button;

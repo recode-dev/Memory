@@ -54,9 +54,9 @@ function init() {
   txtSc = allocScString(constants.Panel_txtField);
 }
 function child(node, name) {
-  const count = node.add(structs.Clip_childCount).readS16();
-  const names = node.add(structs.Clip_nameTable).readPointer();
-  const kids = node.add(structs.Clip_childTable).readPointer();
+  const count = node.add(structs.MovieClip_childCount).readS16();
+  const names = node.add(structs.MovieClip_nameTable).readPointer();
+  const kids = node.add(structs.MovieClip_childTable).readPointer();
   for (let index = 0; index < count; index++) {
     const entry = names.add(index * 8).readPointer();
     if (!entry.isNull() && entry.readUtf8String() === name) return kids.add(index * 8).readPointer();
@@ -79,7 +79,7 @@ function attach(node, art, x, y, scale, action) {
   const button = malloc(constants.Menu_buttonSize);
   customButtonCtor(button);
   customButtonSetMovieClip(button, art, 1);
-  button.add(structs.DisplayObject_touchable).writeU8(1);
+  button.add(structs.DisplayObject_interactive).writeU8(1);
   setScale(button, scale);
   setScale(art, 1);
   setXY(button, x, y);
@@ -182,7 +182,7 @@ function paintPageButtons() {
   for (const item of pageButtons) {
     const on = (item.delta < 0 ? page > 0 : page < constants.Menu_pages - 1) ? 1 : 0;
     item.button.add(structs.DisplayObject_visible).writeU8(on);
-    item.button.add(structs.DisplayObject_touchable).writeU8(on);
+    item.button.add(structs.DisplayObject_interactive).writeU8(on);
   }
 }
 function flip(delta) {
@@ -199,7 +199,7 @@ function build() {
   pageButtons = [];
   popup = malloc(constants.Menu_popupSize);
   popupCtor(popup, clipName, 0, 0, empty, empty, empty, empty, panelSc);
-  clip = popup.add(structs.Popup_clip).readPointer();
+  clip = popup.add(structs.PopupBase_clip).readPointer();
   clip.add(structs.DisplayObject_scaleX).writeFloat(constants.Panel_scaleX);
   clip.add(structs.DisplayObject_scaleY).writeFloat(constants.Panel_scaleY);
   for (const name of constants.Panel_hidden) {
@@ -266,8 +266,8 @@ function build() {
 }
 function popupAlive() {
   const gui = guiGetInstance();
-  const list = gui.add(constants.Gui_popupList).readPointer();
-  const count = gui.add(constants.Gui_popupCount).readS32();
+  const list = gui.add(constants.GUI_popupList).readPointer();
+  const count = gui.add(constants.GUI_popupCount).readS32();
   for (let i = 0; i < count; i += 1) {
     if (list.add(i * 8).readPointer().equals(popup)) return true;
   }

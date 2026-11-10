@@ -5,7 +5,7 @@ export let setText = null;
 export let setFontSize = null;
 export let setTextColor = null;
 export let setXY = null;
-export let setVisibility = null;
+export let setVisible = null;
 export let addChild = null;
 export let spriteCtor = null;
 export let updateHealthBar = null;
@@ -40,7 +40,7 @@ export function stageInstance() {
 export function initFunctions(base) {
   battleModeGetInstance = new NativeFunction(base.add(offsets.BattleMode_getInstance), "pointer", []);
   getOwnCharacter = new NativeFunction(base.add(offsets.LogicBattleModeClient_getOwnCharacter), "pointer", ["pointer"]);
-  clientInputCtor = new NativeFunction(base.add(offsets.ClientInput_ctor), "void", ["pointer", "int"]);
+  clientInputCtor = new NativeFunction(base.add(offsets.ClientInput_constructor_int), "void", ["pointer", "int"]);
   clientInputManagerAddInput = new NativeFunction(base.add(offsets.ClientInputManager_addInput), "void", ["pointer", "pointer"]);
   setClientPredictionMoveTo = new NativeFunction(base.add(offsets.LogicBattleModeClient_setClientPredictionMoveTo), "void", ["pointer", "int", "int", "int"]);
   gameObjectGetX = new NativeFunction(base.add(offsets.LogicGameObjectClient_getX), "int", ["pointer"]);
@@ -50,7 +50,7 @@ export function initFunctions(base) {
   setFontSize = new NativeFunction(base.add(offsets.TextField_setFontSize), "void", ["pointer", "uint16"]);
   setTextColor = new NativeFunction(base.add(offsets.TextField_setTextColor), "void", ["pointer", "uint"]);
   setXY = new NativeFunction(base.add(offsets.DisplayObject_setXY), "void", ["pointer", "float", "float"]);
-  setVisibility = new NativeFunction(base.add(offsets.DisplayObject_setVisibility), "void", ["pointer", "int"]);
+  setVisible = new NativeFunction(base.add(offsets.DisplayObject_setVisible), "void", ["pointer", "int"]);
   addChild = new NativeFunction(base.add(offsets.Sprite_addChild), "pointer", ["pointer", "pointer"]);
   spriteCtor = new NativeFunction(base.add(offsets.Sprite_ctor), "pointer", ["pointer", "int"]);
   updateHealthBar = new NativeFunction(base.add(offsets.Character_updateHealthBar), "void", ["pointer", "float"]);
