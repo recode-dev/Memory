@@ -6,9 +6,6 @@ export let structs = {
   BattleMode_clientInputManager: "0x58",
   BattleMode_hashKey: "0x60",
   BattleMode_hashEnabled: "0x70",
-  BattleController_logicBattleModeClient: "0x28",
-  LogicCharacterClient_buttonSkills: "0x4a8",
-  LogicSkill_castReady: "0x214",
   TextField_baseFontSize: "0x8e",
   TextField_align: "0x96",
   TextField_flags: "0x90",
@@ -26,8 +23,6 @@ export let structs = {
   DisplayObject_scaleY: "0x1c",
   DisplayObject_interactive: "0x48",
   Character_ammoClip: "0xb20",
-  LogicCharacterClient_skills: "0xd8",
-  LogicCharacterClient_skillCount: "0xe4",
   LogicSkillData_canAutoShoot: "0xc4",
   LogicHttpRequest_bodyPtr: "0xc0",
   LogicHttpRequest_bodySize: "0xc8"
