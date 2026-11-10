@@ -1,5 +1,7 @@
 export let structs = {
   ClientInput_data: "0x4",
+  ClientInput_type: "0x8",
+  ClientInput_isAuto: "0x18",
   ClientInput_x: "0xc",
   ClientInput_y: "0x10",
   ClientInput_token: "0x34",
