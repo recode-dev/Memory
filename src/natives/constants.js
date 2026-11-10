@@ -102,6 +102,7 @@ export let constants = {
   AutoSpin_radius: 100,
   AntiAfk_intervalMs: 10000,
   AntiAfk_moveDelta: 1,
+  AntiAfk_liveState: 2,
   Panel_soonLabel: "",
   Menu_pages: 4,
   Panel_gearClip: "popup_profile",
