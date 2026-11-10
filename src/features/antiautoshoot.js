@@ -2,12 +2,13 @@ import { offsets } from "../natives/offsets.js";
 import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { flags, toggleFlag } from "../utils/flags.js";
-import { notifyBlock } from "../ui/blocknotify.js";
 
 let addInputAddress = null;
 let submitAddress = null;
+let tryAutoshootAddress = null;
 let addInputListener = null;
 let submitListener = null;
+let tryAutoshootListener = null;
 
 function isAutoShoot(input) {
   if (input.isNull()) return false;
@@ -27,6 +28,27 @@ function apply() {
   const active = addInputListener !== null;
   if (flags.antiAutoShoot === active) return;
   if (flags.antiAutoShoot) {
+    tryAutoshootListener = Interceptor.attach(tryAutoshootAddress, {
+      onEnter(args) {
+        const char = args[3];
+        if (char.isNull()) return;
+        const items = char.add(structs.Character_skills).readPointer();
+        const count = char.add(structs.Character_skillCount).readS32();
+        this.patched = [];
+        for (let index = 0; index < count; index++) {
+          const skill = items.add(index * 8).readPointer();
+          if (skill.isNull()) continue;
+          const field = skill.add(structs.LogicSkill_autoShootMode);
+          this.patched.push([field, field.readS32()]);
+          field.writeS32(constants.LogicSkill_autoShootBlocked);
+        }
+      },
+      onLeave() {
+        if (!this.patched) return;
+        for (const [field, mode] of this.patched) field.writeS32(mode);
+        this.patched = null;
+      }
+    });
     addInputListener = Interceptor.attach(addInputAddress, {
       onEnter(args) {
         if (!isAutoShoot(args[1])) return;
@@ -35,7 +57,7 @@ function apply() {
       },
       onLeave() {
         if (!this.manager) return;
-        if (popIfLast(this.manager.add(structs.ClientInputManager_queue).readPointer(), this.input)) notifyBlock(constants.BlockNotify_shootText);
+        popIfLast(this.manager.add(structs.ClientInputManager_queue).readPointer(), this.input);
       }
     });
     submitListener = Interceptor.attach(submitAddress, {
@@ -50,10 +72,11 @@ function apply() {
         const units = this.battle.add(structs.LogicBattleModeClient_pendingInputUnits);
         const count = units.add(structs.Vector_count).readS32();
         if (count > 0) units.add(structs.Vector_count).writeS32(count - 1);
-        notifyBlock(constants.BlockNotify_shootText);
       }
     });
   } else {
+    tryAutoshootListener.detach();
+    tryAutoshootListener = null;
     addInputListener.detach();
     addInputListener = null;
     submitListener.detach();
@@ -64,6 +87,7 @@ function apply() {
 export function setupAntiAutoShoot(base) {
   addInputAddress = base.add(offsets.ClientInputManager_addInput);
   submitAddress = base.add(offsets.LogicBattleModeClient_submitInput);
+  tryAutoshootAddress = base.add(offsets.BattleUI_tryAutoshoot);
   apply();
 }
 

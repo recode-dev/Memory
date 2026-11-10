@@ -30,6 +30,9 @@ export let structs = {
   DisplayObject_scaleY: "0x1c",
   DisplayObject_touchable: "0x48",
   Character_ammoClip: "0xb20",
+  Character_skills: "0xd8",
+  Character_skillCount: "0xe4",
+  LogicSkill_autoShootMode: "0xc4",
   LogicHttpRequest_bodyPtr: "0xc0",
   LogicHttpRequest_bodySize: "0xc8"
 };
