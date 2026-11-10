@@ -12,7 +12,6 @@ import { toggleHideLobbyInfo } from "../features/hidelobbyinfo.js";
 import { toggleHideUltiAiming } from "../features/hideultiaiming.js";
 import { toggleAutoSpin } from "../features/autospin.js";
 import { toggleAntiAutoShoot } from "../features/antiautoshoot.js";
-import { toggleAntiAutoSuper } from "../features/antiautosuper.js";
 
 let slot = Memory.alloc(Process.pointerSize);
 let scPath = Memory.allocUtf8String(constants.Ui_sc);
@@ -39,8 +38,7 @@ const slots = [
   { label: constants.Panel_hideLobbyLabel, flag: "hideLobbyInfo", toggle: toggleHideLobbyInfo },
   { label: constants.Panel_hideUltiAimingLabel, flag: "hideUltiAiming", toggle: toggleHideUltiAiming },
   { label: constants.Panel_autoSpinLabel, flag: "autoSpin", toggle: toggleAutoSpin },
-  { label: constants.Panel_antiAutoShootLabel, flag: "antiAutoShoot", toggle: toggleAntiAutoShoot },
-  { label: constants.Panel_antiAutoSuperLabel, flag: "antiAutoSuper", toggle: toggleAntiAutoSuper }
+  { label: constants.Panel_antiAutoShootLabel, flag: "antiAutoShoot", toggle: toggleAntiAutoShoot }
 ];
 function init() {
   if (ready) return;

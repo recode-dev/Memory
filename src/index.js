@@ -9,7 +9,6 @@ import { setupAmmo } from "./features/ammo.js";
 import { setupHideUltiAiming } from "./features/hideultiaiming.js";
 import { setupAutoSpin } from "./features/autospin.js";
 import { setupAntiAutoShoot } from "./features/antiautoshoot.js";
-import { setupAntiAutoSuper } from "./features/antiautosuper.js";
 
 let module = Process.getModuleByName("Nulls Brawl");
 initFunctions(module.base);
@@ -23,4 +22,3 @@ setupAmmo(module.base);
 setupHideUltiAiming(module.base);
 setupAutoSpin();
 setupAntiAutoShoot(module.base);
-setupAntiAutoSuper(module.base);
