@@ -8,6 +8,7 @@ export let offsets = {
   LogicBattleModeClient_update: "0xac1ee8",
   LogicBattleModeClient_getOwnCharacter: "0xac3934",
   LogicBattleModeClient_setClientPredictionMoveTo: "0xac3a58",
+  LogicBattleModeClient_submitInput: "0xacde54",
   LogicGameObjectClient_getX: "0xa23afc",
   LogicGameObjectClient_getY: "0xa23b04",
   HomePage_ctor: "0x86f974",
