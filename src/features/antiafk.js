@@ -23,10 +23,6 @@ function tick(current) {
     pending = false;
     return;
   }
-  // v69.252: update само гейтится cmp [x0,#0x7c],#2; b.le — до state>2 игра не
-  // трогает контейнер игроков и не создаёт инпуты. Наш тик подчиняется тому же:
-  // warmup (загрузка/отсчёт) не армит фичу и не шлёт sendMove — включение в
-  // лобби больше не отличается от включения в бою.
   if (current.add(structs.LogicBattleModeClient_state).readS32() <= constants.AntiAfk_liveState) return;
   if (!armed) {
     armed = true;
