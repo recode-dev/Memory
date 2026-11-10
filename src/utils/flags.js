@@ -4,7 +4,8 @@ export let flags = {
   hideLobbyInfo: false,
   hideUltiAiming: false,
   autoSpin: false,
-  antiAutoShoot: false
+  antiAutoShoot: false,
+  antiAutoSuper: false
 };
 export function toggleFlag(name) {
   flags[name] = !flags[name];

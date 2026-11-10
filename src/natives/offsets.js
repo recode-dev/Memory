@@ -9,6 +9,7 @@ export let offsets = {
   LogicBattleModeClient_getOwnCharacter: "0xac3934",
   LogicBattleModeClient_setClientPredictionMoveTo: "0xac3a58",
   BattleScreen_handleAutoShoot: "0x7a024c",
+  BattleController_handleButtonPress: "0x936010",
   LogicGameObjectClient_getX: "0xa23afc",
   LogicGameObjectClient_getY: "0xa23b04",
   HomePage_ctor: "0x86f974",
