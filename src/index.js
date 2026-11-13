@@ -10,7 +10,7 @@ import { HideUltiAiming } from "./features/hideultiaiming.js";
 import { AutoSpin } from "./features/autospin.js";
 import { AntiAutoShoot } from "./features/antiautoshoot.js";
 
-class App {
+class Index {
   static init() {
     const module = Process.getModuleByName("Nulls Brawl");
     NativeFunctions.init(module.base);
@@ -27,4 +27,4 @@ class App {
   }
 }
 
-App.init();
+Index.init();
