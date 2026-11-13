@@ -19,7 +19,7 @@ export class AntiAfk {
       this.logic = current;
       this.lastX = null;
     }
-    if (!flags.antiAfk) {
+    if (!flags.antiAfk || flags.autoSpin) {
       this.armed = false;
       this.pending = false;
       return;

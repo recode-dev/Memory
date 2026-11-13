@@ -6,6 +6,8 @@ import { flags } from "../utils/flags.js";
 import { DataTables } from "../natives/datatables.js";
 import { ScString } from "../core/scstring.js";
 import { Gradient } from "./gradient.js";
+import { MenuButton } from "./menubutton.js";
+import { Menu } from "./menu.js";
 
 export class LobbyInfo {
   static field = null;
@@ -47,6 +49,7 @@ export class LobbyInfo {
         NativeFunctions.setTextColor(LobbyInfo.field, constants.Badge_color);
         LobbyInfo.paintBadge(0);
         NativeFunctions.addChild(this.page, LobbyInfo.field);
+        MenuButton.create(() => Menu.toggle());
         if (LobbyInfo.started) return;
         LobbyInfo.started = true;
         setInterval(() => LobbyInfo.repaint(), constants.Badge_shineMs);

@@ -7,7 +7,6 @@ import { ScString } from "../core/scstring.js";
 import { DataTables } from "../natives/datatables.js";
 import { Gradient } from "./gradient.js";
 import { flags } from "../utils/flags.js";
-import { MenuButton } from "./menubutton.js";
 import { HideLobbyInfo } from "../features/hidelobbyinfo.js";
 import { HideUltiAiming } from "../features/hideultiaiming.js";
 import { AutoSpin } from "../features/autospin.js";
@@ -321,11 +320,6 @@ export class Menu {
       onEnter(args) {
         const action = Callbacks.buttonAction(args[0]);
         if (action) action();
-      }
-    });
-    Interceptor.attach(base.add(offsets.HomePage_ctor), {
-      onLeave() {
-        MenuButton.create(() => Menu.toggle());
       }
     });
   }
