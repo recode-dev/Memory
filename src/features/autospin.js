@@ -1,3 +1,4 @@
+import { structs } from "../natives/structs.js";
 import { constants } from "../natives/constants.js";
 import { flags } from "../utils/flags.js";
 import { NativeFunctions } from "../natives/functions.js";
@@ -18,6 +19,7 @@ export class AutoSpin {
 
   static tick(current) {
     if (!flags.autoSpin) return;
+    if (current.add(structs.LogicBattleModeClient_state).readS32() <= constants.AntiAfk_liveState) return;
     if (!this.battle || !this.battle.equals(current)) {
       this.battle = current;
       this.phase = 0;
