@@ -1,31 +1,33 @@
 import { offsets } from "../natives/offsets.js";
 import { constants } from "../natives/constants.js";
-import { flags, toggleFlag } from "../utils/flags.js";
+import { flags } from "../utils/flags.js";
 
-let address = null;
-let listener = null;
+export class HideUltiAiming {
+  static address = null;
+  static listener = null;
 
-function apply() {
-  const active = listener !== null;
-  if (flags.hideUltiAiming === active) return;
-  if (flags.hideUltiAiming) {
-    listener = Interceptor.attach(address, {
-      onEnter(args) {
-        if (args[1].toInt32() === constants.ClientInput_ultiAimingType) args[1] = ptr(constants.ClientInput_hiddenType);
-      }
-    });
-  } else {
-    listener.detach();
-    listener = null;
+  static apply() {
+    const active = this.listener !== null;
+    if (flags.hideUltiAiming === active) return;
+    if (flags.hideUltiAiming) {
+      this.listener = Interceptor.attach(this.address, {
+        onEnter(args) {
+          if (args[1].toInt32() === constants.ClientInput_ultiAimingType) args[1] = ptr(constants.ClientInput_hiddenType);
+        }
+      });
+    } else {
+      this.listener.detach();
+      this.listener = null;
+    }
   }
-}
 
-export function setupHideUltiAiming(base) {
-  address = base.add(offsets.ClientInput_constructor_int);
-  apply();
-}
+  static init(base) {
+    this.address = base.add(offsets.ClientInput_constructor_int);
+    this.apply();
+  }
 
-export function toggleHideUltiAiming() {
-  toggleFlag("hideUltiAiming");
-  apply();
+  static toggle() {
+    flags.toggle("hideUltiAiming");
+    this.apply();
+  }
 }

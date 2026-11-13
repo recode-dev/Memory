@@ -1,18 +1,22 @@
-import { malloc, stringCtor, stringDtor } from "../natives/functions.js";
+import { NativeFunctions } from "../natives/functions.js";
 import { constants } from "../natives/constants.js";
 
-export function allocScString(text) {
-  const sc = malloc(constants.ScString_width);
-  stringCtor(sc, Memory.allocUtf8String(text));
-  return sc;
-}
-export function destroyScString(sc) {
-  stringDtor(sc);
-}
-export function withScString(text, fn) {
-  const sc = Memory.alloc(constants.ScString_width);
-  stringCtor(sc, Memory.allocUtf8String(text));
-  const result = fn(sc);
-  stringDtor(sc);
-  return result;
+export class ScString {
+  static alloc(text) {
+    const sc = NativeFunctions.malloc(constants.ScString_width);
+    NativeFunctions.stringCtor(sc, Memory.allocUtf8String(text));
+    return sc;
+  }
+
+  static destroy(sc) {
+    NativeFunctions.stringDtor(sc);
+  }
+
+  static with(text, fn) {
+    const sc = Memory.alloc(constants.ScString_width);
+    NativeFunctions.stringCtor(sc, Memory.allocUtf8String(text));
+    const result = fn(sc);
+    NativeFunctions.stringDtor(sc);
+    return result;
+  }
 }

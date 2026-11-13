@@ -1,11 +1,9 @@
-import { toggleFlag } from "../utils/flags.js";
+import { flags } from "../utils/flags.js";
+import { LobbyInfo } from "../ui/lobbyinfo.js";
 
-let apply = null;
-export function setLobbyInfoField(applyVisibility) {
-  apply = applyVisibility;
-  apply();
-}
-export function toggleHideLobbyInfo() {
-  toggleFlag("hideLobbyInfo");
-  apply();
+export class HideLobbyInfo {
+  static toggle() {
+    flags.toggle("hideLobbyInfo");
+    LobbyInfo.applyVisibility();
+  }
 }

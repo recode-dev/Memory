@@ -1,24 +1,30 @@
-import { initFunctions } from "./natives/functions.js";
-import { setupCommands } from "./core/commands.js";
-import { setupBattleTick } from "./core/tick.js";
-import { setupLicense } from "./utils/license.js";
-import { setupLobbyInfo } from "./ui/lobbyinfo.js";
-import { setupAntiAfk } from "./features/antiafk.js";
-import { setupMenu } from "./ui/menu.js";
-import { setupAmmo } from "./features/ammo.js";
-import { setupHideUltiAiming } from "./features/hideultiaiming.js";
-import { setupAutoSpin } from "./features/autospin.js";
-import { setupAntiAutoShoot } from "./features/antiautoshoot.js";
+import { NativeFunctions } from "./natives/functions.js";
+import { Commands } from "./core/commands.js";
+import { BattleTick } from "./core/tick.js";
+import { License } from "./utils/license.js";
+import { LobbyInfo } from "./ui/lobbyinfo.js";
+import { AntiAfk } from "./features/antiafk.js";
+import { Menu } from "./ui/menu.js";
+import { Ammo } from "./features/ammo.js";
+import { HideUltiAiming } from "./features/hideultiaiming.js";
+import { AutoSpin } from "./features/autospin.js";
+import { AntiAutoShoot } from "./features/antiautoshoot.js";
 
-let module = Process.getModuleByName("Nulls Brawl");
-initFunctions(module.base);
-setupCommands(module.base);
-setupBattleTick(module.base);
-setupLicense(module);
-setupLobbyInfo(module.base);
-setupAntiAfk(module.base);
-setupMenu(module.base);
-setupAmmo(module.base);
-setupHideUltiAiming(module.base);
-setupAutoSpin();
-setupAntiAutoShoot(module.base);
+class App {
+  static init() {
+    const module = Process.getModuleByName("Nulls Brawl");
+    NativeFunctions.init(module.base);
+    Commands.init(module.base);
+    BattleTick.init(module.base);
+    License.init(module);
+    LobbyInfo.init(module.base);
+    AntiAfk.init(module.base);
+    Menu.init(module.base);
+    Ammo.init(module.base);
+    HideUltiAiming.init(module.base);
+    AutoSpin.init();
+    AntiAutoShoot.init(module.base);
+  }
+}
+
+App.init();

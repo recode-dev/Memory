@@ -1,6 +1,8 @@
-import { getDataById } from "./functions.js";
+import { NativeFunctions } from "./functions.js";
 import { constants } from "./constants.js";
 
-export function resolveGradient(classId, itemId) {
-  return getDataById(classId * constants.LogicDataTables_globalIdStep + itemId, classId);
+export class DataTables {
+  static resolveGradient(classId, itemId) {
+    return NativeFunctions.getDataById(classId * constants.LogicDataTables_globalIdStep + itemId, classId);
+  }
 }
