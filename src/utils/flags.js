@@ -14,4 +14,3 @@ class Flags {
 }
 
 export const flags = new Flags();
-export { Flags };

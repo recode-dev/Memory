@@ -19,15 +19,15 @@ export class LobbyInfo {
 
   static repaint() {
     if (flags.hideLobbyInfo) return;
-    LobbyInfo.paintBadge(Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod);
+    this.paintBadge(Date.now() % constants.Badge_shinePeriod / constants.Badge_shinePeriod);
   }
 
   static applyVisibility() {
     if (flags.hideLobbyInfo) {
-      ScString.with("", (sc) => NativeFunctions.setText(LobbyInfo.field, sc));
+      ScString.with("", (sc) => NativeFunctions.setText(this.field, sc));
       return;
     }
-    LobbyInfo.repaint();
+    this.repaint();
   }
 
   static init(base) {
@@ -49,7 +49,7 @@ export class LobbyInfo {
         NativeFunctions.addChild(this.page, LobbyInfo.field);
         if (LobbyInfo.started) return;
         LobbyInfo.started = true;
-        setInterval(LobbyInfo.repaint, constants.Badge_shineMs);
+        setInterval(() => LobbyInfo.repaint(), constants.Badge_shineMs);
       }
     });
   }
